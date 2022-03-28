@@ -1,0 +1,22 @@
+{
+"Servers" : [
+                {
+                    "SourceSqlConnectionAuthentication": "SqlAuthentication",
+                    "SourceSqlConnectionDataSource": "SQLServer001",
+                    "SourceSqlConnectionUserName": "testuser1",
+                    "SourceSqlConnectionPassword": "testAdmin123",
+                    "Kind": "SqlMi",
+                    "ResourceGroupName": "MigrationTesting",   
+                    "Scope": "/subscriptions/MySubscriptionID/resourceGroups/MigrationTesting/providers/Microsoft.Sql/managedInstances/migrationtestmi",
+                    "BlobFileshare" : "fileshare",
+                    "Offline" : false,
+                    "DatabasesFromSourceSql" : false,                  
+                    "SqlQueryToGetDbs" : "select name from sys.databases where name not in ('master', 'tempdb', 'model', 'msdb') and is_distributor <> 1 and name like 'trgt'",
+                    "databases" : [
+                        "trgt",
+                        "AdventureWorks"                     
+                    ],
+                    "Cutover" : true
+                }
+            ]
+}

@@ -1,0 +1,12 @@
+{
+    "NewDMS": false,
+    "NewDMSLocation": "eastus2",
+    "NewDMSRG": "MyRG",
+    "NewDMSName": "scriptdms32",
+    "DMSName": "dms20211030",
+    "DMSRG": "MyRG",
+    "InstallIR": false,
+    "IRPath": "",
+    "BlobFileshare": "fileshare",
+    "LogFailedDbs": true
+}
