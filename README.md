@@ -5,20 +5,20 @@ The [Azure SQL Migration extension for Azure Data Studio](/sql/azure-data-studio
 The following sample scripts can be referenced to suit your migration scenario using Azure PowerShell or Azure CLI:
 |Scripting language  |Migration scenario  |Azure Samples link  |
 |---------|---------|---------|
-|PowerShell     |SQL Server assessment         |[https://github.com](https://github.com)         |
-|PowerShell     |SQL Server to Azure SQL Managed Instance (using file share)         |[https://github.com](https://github.com)         |
-|PowerShell     |SQL Server to Azure SQL Managed Instance (using Azure storage)         |[https://github.com](https://github.com)           |
-|PowerShell     |SQL Server to SQL Server on Azure Virtual Machines (using file share)          |[https://github.com](https://github.com)         |
-|PowerShell     |SQL Server to SQL Server on Azure Virtual Machines (using Azure Storage)         |[https://github.com](https://github.com)         |
-|PowerShell     |Sample: End-to-End migration automation         |[https://github.com](https://github.com)         |
-|PowerShell     |Sample: End-to-End migration automation for multiple databases         |[https://github.com](https://github.com)         |
-|CLI     |SQL Server assessment         |[https://github.com](https://github.com)         |
-|CLI     |SQL Server to Azure SQL Managed Instance (using file share)         |[https://github.com](https://github.com)         |
-|CLI     |SQL Server to Azure SQL Managed Instance (using Azure storage)         |[https://github.com](https://github.com)         |
-|CLI     |SQL Server to SQL Server on Azure Virtual Machines (using file share)         |[https://github.com](https://github.com)         |
-|CLI     |SQL Server to SQL Server on Azure Virtual Machines (using Azure Storage)         |[https://github.com](https://github.com)         |
-|CLI     |Sample: End-to-End migration automation         |[https://github.com](https://github.com)         |
-|CLI     |Sample: End-to-End migration automation for multiple databases         |[https://github.com](https://github.com)         |
+|PowerShell     |SQL Server assessment         |[/PowerShell/sql-server-assessment.md](/PowerShell/sql-server-assessment.md)         |
+|PowerShell     |SQL Server to Azure SQL Managed Instance (using file share)         |[/PowerShell/sql-server-to-sql-mi-fileshare.md](/PowerShell/sql-server-to-sql-mi-fileshare.md)         |
+|PowerShell     |SQL Server to Azure SQL Managed Instance (using Azure storage)         |[/PowerShell/sql-server-to-sql-mi-blob.md](/PowerShell/sql-server-to-sql-mi-blob.md)           |
+|PowerShell     |SQL Server to SQL Server on Azure Virtual Machines (using file share)          |[/PowerShell/sql-server-to-sql-vm-fileshare.md](/PowerShell/sql-server-to-sql-vm-fileshare.md)         |
+|PowerShell     |SQL Server to SQL Server on Azure Virtual Machines (using Azure Storage)         |[/PowerShell/sql-server-to-sql-vm-blob.md](/PowerShell/sql-server-to-sql-vm-blob.md)         |
+|PowerShell     |Sample: End-to-End migration automation         |[/PowerShell/scripts/](/PowerShell/scripts/)         |
+|PowerShell     |Sample: End-to-End migration automation for multiple databases         |[/PowerShell/scripts/multiple%20databases/](/PowerShell/scripts/multiple%20databases/)         |
+|CLI     |SQL Server assessment         |[/CLI/sql-server-assessment.md](/CLI/sql-server-assessment.md)         |
+|CLI     |SQL Server to Azure SQL Managed Instance (using file share)         |[/CLI/sql-server-to-sql-mi-fileshare.md](/CLI/sql-server-to-sql-mi-fileshare.md)         |
+|CLI     |SQL Server to Azure SQL Managed Instance (using Azure storage)         |[/CLI/sql-server-to-sql-mi-blob.md](/CLI/sql-server-to-sql-mi-blob.md)         |
+|CLI     |SQL Server to SQL Server on Azure Virtual Machines (using file share)         |[/CLI/sql-server-to-sql-vm-fileshare.md](/CLI/sql-server-to-sql-vm-fileshare.md)         |
+|CLI     |SQL Server to SQL Server on Azure Virtual Machines (using Azure Storage)         |[/CLI/sql-server-to-sql-vm-blob.md](/CLI/sql-server-to-sql-vm-blob.md)         |
+|CLI     |Sample: End-to-End migration automation         |[/CLI/scripts/](/CLI/scripts/)         |
+|CLI     |Sample: End-to-End migration automation for multiple databases         |[/CLI/scripts/multiple%20databases/](/CLI/scripts/multiple%20databases/)         |
 
 ## Getting Started
 
