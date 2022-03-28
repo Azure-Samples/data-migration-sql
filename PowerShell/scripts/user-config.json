@@ -1,0 +1,14 @@
+{
+    "NewDMS": false,
+    "NewDMSLocation": "eastus2euap",
+    "NewDMSRG": "test388RG",
+    "NewDMSName": "script2",
+    "DMSName": "dms20211030",
+    "DMSRG": "test38RG",
+    "InstallIR": false,
+    "IRPath": "C:\\Users\\testuser\\Downloads\\IntegrationRuntime_5.13.8013.1.msi",
+    "BlobFileshare": "fileshare",
+    "WaitTillCompletion": true,
+    "Cutover": true
+  }
+  
