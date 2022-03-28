@@ -1,0 +1,11 @@
+{
+  "NewDMS": false,
+  "NewDMSLocation": "eastus2",
+  "NewDMSRG": "NewRG",
+  "NewDMSName": "NewDMSIR",
+  "DMSName": "DMSIR",
+  "DMSRG": "RG",
+  "BlobFileshare": "blob",
+  "WaitTillCompletion": true,
+  "Cutover": true
+}

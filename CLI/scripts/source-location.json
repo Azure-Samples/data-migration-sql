@@ -1,0 +1,7 @@
+{
+  "AzureBlob": {
+    "storageAccountResourceId": "/subscriptions/1111-2222-3333-4444/resourceGroups/RG/prooviders/Microsoft.Storage/storageAccounts/MyStorage",
+    "accountKey": "======AccountKey====",
+    "blobContainerName": "ContanerName-X"
+  }
+}
