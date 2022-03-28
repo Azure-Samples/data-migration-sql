@@ -68,5 +68,5 @@ Pre-requisites that are common across all supported migration scenarios using Az
 
 ## Resources
 
-- For Azure PowerShell reference documentation for SQL Server database migrations, see Az.DataMigration](https://docs.microsoft.com/powershell/module/az.datamigration).
-- For Azure CLI reference documentation for SQL Server database migrations, see Az.DataMigration](https://docs.microsoft.com/cli/azure/datamigration).
+- For Azure PowerShell reference documentation for SQL Server database migrations, see [Az.DataMigration](https://docs.microsoft.com/powershell/module/az.datamigration).
+- For Azure CLI reference documentation for SQL Server database migrations, see [az datamigration](https://docs.microsoft.com/cli/azure/datamigration).
