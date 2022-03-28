@@ -112,7 +112,7 @@ New-AzDataMigrationToSqlManagedInstance `
     -Scope "/subscriptions/f890983-56793-782e7-378-3563829e/resourceGroups/MyResourceGroup/providers/Microsoft.Sql/managedInstances/MyManagedInstance" `
     -MigrationService "/subscriptions/f890983-56793-782e7-378-3563829e/resourceGroups/MyResourceGroup/providers/Microsoft.DataMigration/SqlMigrationServices/MySqlMigrationService" `
     -StorageAccountResourceId "/subscriptions/f890983-56793-782e7-378-3563829e/resourceGroups/MyResourceGroup/providers/Microsoft.Storage/storageAccounts/MyStorageAccount" `
-    -StorageAccountKey "dwidjwiwnnwiojnnmskoam==adnkdnwdnwknk" `
+    -StorageAccountKey "xxxxx" `
     -FileSharePath "\\filesharepath.com\SharedBackup\MyBackUps" `
     -FileShareUsername "filesharepath\User" `
     -FileSharePassword "password" `
@@ -135,7 +135,7 @@ New-AzDataMigrationToSqlManagedInstance `
     -Scope "/subscriptions/f890983-56793-782e7-378-3563829e/resourceGroups/MyResourceGroup/providers/Microsoft.Sql/managedInstances/MyManagedInstance" `
     -MigrationService "/subscriptions/f890983-56793-782e7-378-3563829e/resourceGroups/MyResourceGroup/providers/Microsoft.DataMigration/SqlMigrationServices/MySqlMigrationService" `
     -StorageAccountResourceId "/subscriptions/f890983-56793-782e7-378-3563829e/resourceGroups/MyResourceGroup/providers/Microsoft.Storage/storageAccounts/MyStorageAccount" `
-    -StorageAccountKey "dwidjwiwnnwiojnnmskoam==adnkdnwdnwknk" `
+    -StorageAccountKey "xxx" `
     -FileSharePath "\\filesharepath.com\SharedBackup\MyBackUps" `
     -FileShareUsername "filesharepath\User" `
     -FileSharePassword "password" `
@@ -146,28 +146,6 @@ New-AzDataMigrationToSqlManagedInstance `
     -SourceDatabaseName "AdventureWorks" `
     -Offline
 ```
-
-**Working Command**
-```
-New-AzDataMigrationToSqlManagedInstance `
-    -ResourceGroupName "MigrationTesting" `
-    -ManagedInstanceName "migrationtestmi" `
-    -TargetDbName "<<DB Name>>" `
-    -Kind "SqlMI" `
-    -Scope "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/MigrationTesting/providers/Microsoft.Sql/managedInstances/migrationtestmi" `
-    -MigrationService "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/tsum38RG/providers/Microsoft.DataMigration/SqlMigrationServices/MySqlMigrationService1" `
-    -StorageAccountResourceId "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/aaskhan/providers/Microsoft.Storage/storageAccounts/aasimmigrationtest" `
-    -StorageAccountKey "<<Key>>" `
-    -FileSharePath "\\aalab03-2k8.redmond.corp.microsoft.com\SharedBackup\tsuman" `
-    -FileShareUsername "AALAB03-2K8\hijavatestlocaluse" `
-    -FileSharePassword "testAdmin123" `
-    -SourceSqlConnectionAuthentication "SqlAuthentication" `
-    -SourceSqlConnectionDataSource "AALAB03-2K8.REDMOND.CORP.MICROSOFT.COM" `
-    -SourceSqlConnectionUserName "hijavatestuser1" `
-    -SourceSqlConnectionPassword "testAdmin123" `
-    -SourceDatabaseName "AdventureWorks"
-```
-
 
 ## Monitoring Migration
 
