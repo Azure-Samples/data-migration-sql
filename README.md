@@ -66,6 +66,9 @@ Pre-requisites that are common across all supported migration scenarios using Az
 * When using self-hosted integration runtime, make sure that the machine where the runtime is installed can connect to the source SQL Server instance and the network file share where backup files are located. Outbound port 445 should be enabled to allow access to the network file share.
 * If you're using the Azure Database Migration Service for the first time, ensure that Microsoft.DataMigration resource provider is registered in your subscription. You can follow the steps to [register the resource provider](https://docs.microsoft.com/azure/dms/quickstart-create-data-migration-service-portal#register-the-resource-provider)
 
+> [!TIP]
+> If you receive the error "The subscription is not registered to use namespace 'Microsoft.DataMigration'. See https://aka.ms/rps-not-found for how to register subscriptions.", run Register-AzResourceProvider -ProviderNamespace "Microsoft.DataMigration".
+
 ## Resources
 
 - For Azure PowerShell reference documentation for SQL Server database migrations, see [Az.DataMigration](https://docs.microsoft.com/powershell/module/az.datamigration).
