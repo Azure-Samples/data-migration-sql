@@ -1,8 +1,3 @@
-Note: 
-
-- <b>Please run the commands in Azure CLI Administrator Mode as az datamigration register-integration-runtime command requires admin permissions.</b>
-- <b> Both Migration Service and Managed Instance/Virtual Machine must be in the same location.</b>
-
 ## Perfoming Online Migration
 
 In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to an SQL Managed Instance by using the Az.DataMigration module in Microsoft Azure CLI.
@@ -14,7 +9,7 @@ In this article, we perform a online migration of the Adventureworks database re
 - Start an online migration
 - Perform cutover for the online migration
 
-**Note 1**: The query parameter shown in this tutorial works with powershell only and not with cmd. If you are using cmd, please manually copy and paste the parameters mentioned.
+**Note 1**: The query parameter shown in this tutorial works with powershell only and not with cmd. If you are using cmd, manually copy and paste the parameters mentioned.
 
 
 ## Prerequisites
