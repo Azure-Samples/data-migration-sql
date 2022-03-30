@@ -150,4 +150,4 @@ az datamigration sql-service delete --sql-migration-service-name "MySqlMigration
 
 ## Addition Resources on Cmdlets
 
-- You can find the documentation of each of the cmdlets here : [DataMigration Cmdlets Doc](https://review.docs.microsoft.com/cli/azure/datamigration).
+- You can find the documentation of each of the cmdlets here : [DataMigration Cmdlets Doc](https://docs.microsoft.com/cli/azure/datamigration).
