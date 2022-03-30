@@ -17,7 +17,6 @@ In this article, we perform a online migration of the Adventureworks database re
 - SQL Server with AdventureWorks database.
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
 - A SQL Virtual Machine with write access. You can create a SQL Virtual Machine by following the detail in the article [Create a SQL Virtual Machine](https://docs.microsoft.com/en-us/azure/azure-sql/virtual-machines/windows/sql-vm-create-portal-quickstart)
-- Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
 - Azure blob storage with back up files.
 - Azure CLI installed. You can do it using `pip install azure-cli` or follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 - `az datamigtation`  CLI extension installed. You can do it using `az extension add --name datamigration`.
