@@ -105,7 +105,7 @@ For Target SQL Plaform as VM and Backups in Fileshare case:-
 ```Json
 {
   "ResourceGroupName": "RG2",
-  "Scope": "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/RG/providers/Microsoft.SqlVirtualMachine/SqlVirtualMachines/MySqlVM2",
+  "Scope": "/subscriptions/111111-11111-11111-111111/resourceGroups/RG/providers/Microsoft.SqlVirtualMachine/SqlVirtualMachines/MySqlVM2",
   "MigrationService": "/subscriptions/111111-11111-11111-111111/resourceGroups/RG/providers/Microsoft.DataMigration/SqlMigrationServices/DMSIR2",
   "SourceSqlConnectionAuthentication": "SqlAuthentication",
   "SourceSqlConnectionDataSource": "Server2",
