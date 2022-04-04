@@ -125,7 +125,7 @@ The migration is ready for cutover when `CurrentRestoringFilename` is equal to `
 
 ## Performing cutover
 
-With an online migration, a full backup and restore of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob.
+With an online migration, a restore of provided backups of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob.
 
 When the database in a Azure SQL VM is updated with latest data and is in sync with the source database, you can perform a cutover.
 
