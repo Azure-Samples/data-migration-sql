@@ -18,7 +18,17 @@ In this article, we perform a online migration of the Adventureworks database re
 - A SQL Virtual Machine with write access. You can create a SQL Virtual Machine by following the detail in the article [Create a SQL Virtual Machine](https://docs.microsoft.com/en-us/azure/azure-sql/virtual-machines/windows/sql-vm-create-portal-quickstart)
 - Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
 - This exercise expects that you already have details of Fileshare where the backups are stored and an Azure Storage Account.
-- Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0). 
+- Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0).
+
+## Azure login 
+
+Before we get started with managing azure resources with Azure PowerShell we need to login into azure and set our default subscription.
+
+In the following example we login using the `Connect-AzAccount` command and select a particular subscription by passing `-Subscription` command.
+
+```
+Connect-AzAccount -Subscription <Subscription-id>
+```
 
 ## Create a Resource Group
 

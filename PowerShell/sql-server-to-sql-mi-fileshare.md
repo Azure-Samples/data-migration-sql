@@ -22,6 +22,16 @@ In this article, we perform a online migration of the Adventureworks database re
 - This exercise expects that you already have details of Fileshare where the backups are stored and an Azure Storage Account.
 - Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0).
 
+## Azure login 
+
+Before we get started with managing azure resources with Azure PowerShell we need to login into azure and set our default subscription.
+
+In the following example we login using the `Connect-AzAccount` command and select a particular subscription by passing `-Subscription` command.
+
+```
+Connect-AzAccount -Subscription <Subscription-id>
+```
+
 ## Create a Resource Group
 
 An Azure resource group is a logical container in which Azure resources are deployed and managed.

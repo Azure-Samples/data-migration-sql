@@ -30,6 +30,18 @@ In this article, we perform a online migration of the Adventureworks database re
 - Azure CLI installed. You can do it using `pip install azure-cli` or follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 - `az datamigtation`  CLI extension installed. You can do it using `az extension add --name datamigration`.
 
+## Azure login 
+
+Before we get started with managing azure resources with Azure CLI we need to login into azure and set our default subscription.
+
+In the following example we login using the `az login` command and select a particular subscription with `az account set` command.
+
+```
+az login
+
+az account set --subscription <Subscription-id>
+```
+
 ## Create a Resource Group
 
 An Azure resource group is a logical container in which Azure resources are deployed and managed.
