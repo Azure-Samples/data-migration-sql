@@ -1,0 +1,17 @@
+{
+  "ResourceGroupName": "RG1",
+  "Scope": "/subscriptions/111111-11111-11111-111111/resourceGroups/RG/providers/Microsoft.Sql/managedInstances/MyManagedInstance1",
+  "MigrationService": "/subscriptions/111111-11111-11111-111111/resourceGroups/RG/providers/Microsoft.DataMigration/SqlMigrationServices/DMSIR1",
+  "SourceSqlConnectionAuthentication": "SqlAuthentication",
+  "SourceSqlConnectionDataSource": "Server1",
+  "SourceSqlConnectionUserName": "<placeholder>",
+  "SourceSqlConnectionPassword": "<placeholder>",
+  "Kind": "SqlMi",
+  "ManagedInstanceName": "MyManagedInstance1",
+  "SqlVirtualMachineName": null,
+  "StorageAccountResourceId": null,
+  "StorageAccountKey": null,
+  "Server1Database1_LastBackupName": null,
+  "Server1Database2_LastBackupName": null,
+  "BlobFileshare": "blob"
+}

@@ -49,8 +49,7 @@ Pre-requisites that are common across all supported migration scenarios using Az
     > - Use compressed backups to reduce the likelihood of experiencing potential issues associated with migrating large backups.
 * Ensure that the service account running the source SQL Server instance has read and write permissions on the SMB network share that contains database backup files.
 * The source SQL Server instance certificate from a database protected by Transparent Data Encryption (TDE) needs to be migrated to the target Azure SQL Managed Instance or SQL Server on Azure Virtual Machine before migrating data. To learn more, see [Migrate a certificate of a TDE-protected database to Azure SQL Managed Instance](https://docs.microsoft.com/azure/azure-sql/managed-instance/tde-certificate-migrate) and [Move a TDE Protected Database to Another SQL Server](https://docs.microsoft.com/sql/relational-databases/security/encryption/move-a-tde-protected-database-to-another-sql-server).
-    > [!TIP]
-    > If your database contains sensitive data that is protected by [Always Encrypted](https://docs.microsoft.com/sql/relational-databases/security/encryption/configure-always-encrypted-using-sql-server-management-studio), migration process using Azure Data Studio with DMS will automatically migrate your Always Encrypted keys to your target Azure SQL Managed Instance or SQL Server on Azure Virtual Machine.
+    TIP: If your database contains sensitive data that is protected by [Always Encrypted](https://docs.microsoft.com/sql/relational-databases/security/encryption/configure-always-encrypted-using-sql-server-management-studio), migration process using Azure Data Studio with DMS will automatically migrate your Always Encrypted keys to your target Azure SQL Managed Instance or SQL Server on Azure Virtual Machine.
 
 * If your database backups are in a network file share, provide a machine to install [self-hosted integration runtime](https://docs.microsoft.com/azure/data-factory/create-self-hosted-integration-runtime) to access and migrate database backups. The Azure PowerShell or Azure CLI modules provide the authentication keys to register your self-hosted integration runtime. In preparation for the migration, ensure that the machine where you plan to install the self-hosted integration runtime has the following outbound firewall rules and domain names enabled:
 
@@ -60,11 +59,12 @@ Pre-requisites that are common across all supported migration scenarios using Az
     | `download.microsoft.com`    | 443            | Required by the self-hosted integration runtime for downloading the updates. If you have disabled auto-update, you can skip configuring this domain. |
     | `*.core.windows.net`          | 443            | Used by the self-hosted integration runtime that connects to the Azure storage account for uploading database backups from your network share |
 
-    > [!TIP]
-    > If your database backup files are already provided in an Azure storage account, self-hosted integration runtime is not required during the migration process.
+    TIP: If your database backup files are already provided in an Azure storage account, self-hosted integration runtime is not required during the migration process.
 
 * When using self-hosted integration runtime, make sure that the machine where the runtime is installed can connect to the source SQL Server instance and the network file share where backup files are located. Outbound port 445 should be enabled to allow access to the network file share.
 * If you're using the Azure Database Migration Service for the first time, ensure that Microsoft.DataMigration resource provider is registered in your subscription. You can follow the steps to [register the resource provider](https://docs.microsoft.com/azure/dms/quickstart-create-data-migration-service-portal#register-the-resource-provider)
+
+TIP: If you receive the error "The subscription is not registered to use namespace 'Microsoft.DataMigration'. See https://aka.ms/rps-not-found for how to register subscriptions.", run Register-AzResourceProvider -ProviderNamespace "Microsoft.DataMigration".
 
 ## Resources
 

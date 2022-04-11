@@ -1,8 +1,3 @@
-Note: 
-
-- <b>Please run the commands in Azure CLI Administrator Mode as az datamigration register-integration-runtime command requires admin permissions.</b>
-- <b> Both Migration Service and Managed Instance/Virtual Machine must be in the same location.</b>
-
 ## Perfoming Online Migration
 
 In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to an SQL Managed Instance by using the Az.DataMigration module in Microsoft Azure CLI.
@@ -14,7 +9,7 @@ In this article, we perform a online migration of the Adventureworks database re
 - Start an online migration
 - Perform cutover for the online migration
 
-**Note 1**: The query parameter shown in this tutorial works with powershell only and not with cmd. If you are using cmd, please manually copy and paste the parameters mentioned.
+**Note 1**: The query parameter shown in this tutorial works with powershell only and not with cmd. If you are using cmd, manually copy and paste the parameters mentioned.
 
 
 ## Prerequisites
@@ -22,7 +17,6 @@ In this article, we perform a online migration of the Adventureworks database re
 - SQL Server with AdventureWorks database.
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
 - A SQL Managed Instance with write access. You can create a SQL Managed Instance by following the detail in the article [Create a SQL Managed Instance](https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/instance-create-quickstart)
-- Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
 - To have run assessment on the source SQL server to see if the migration to SQL Managed Instance is possible or not.
 - Azure blob storage with back up files.
 - Azure CLI installed. You can do it using `pip install azure-cli` or follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
@@ -167,4 +161,4 @@ az datamigration sql-service delete --sql-migration-service-name "MySqlMigration
 
 ## Addition Resources on Cmdlets
 
-- You can find the documentation of each of the cmdlets here : [DataMigration Cmdlets Doc](https://review.docs.microsoft.com/cli/azure/datamigration).
+- You can find the documentation of each of the cmdlets here : [DataMigration Cmdlets Doc](https://docs.microsoft.com/cli/azure/datamigration).
