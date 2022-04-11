@@ -19,6 +19,15 @@ In this article, we perform a online migration of the Adventureworks database re
 - Azure blob storage with back up files.
 - Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0).
 
+## Azure login 
+
+Before we get started with managing azure resources with Azure PowerShell we need to login into azure and set our default subscription.
+
+In the following example we login using the `Connect-AzAccount` command and select a particular subscription by passing `-Subscription` command.
+
+```
+Connect-AzAccount -Subscription <Subscription-id>
+```
 
 ## Create a Resource Group
 
@@ -131,7 +140,7 @@ The migration is ready for cutover when `CurrentRestoringFilename` is equal to `
 
 ## Performing cutover
 
-With an online migration, a full backup and restore of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob storage.
+With an online migration, a restore of provided backups of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob storage.
 
 When the database in a Azure SQL Managed Instance is updated with latest data and is in sync with the source database, you can perform a cutover.
 

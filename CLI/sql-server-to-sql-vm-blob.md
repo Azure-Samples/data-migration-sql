@@ -21,6 +21,18 @@ In this article, we perform a online migration of the Adventureworks database re
 - Azure CLI installed. You can do it using `pip install azure-cli` or follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 - `az datamigtation`  CLI extension installed. You can do it using `az extension add --name datamigration`.
 
+## Azure login 
+
+Before we get started with managing azure resources with Azure CLI we need to login into and azure and set our default subscription.
+
+In the following example we login using the `az login` command and select a particular subscription with `az account set` command.
+
+```
+az login
+
+az account set --subscription <Subscription-id>
+```
+
 ## Create a Resource Group
 
 An Azure resource group is a logical container in which Azure resources are deployed and managed.
@@ -119,7 +131,7 @@ The migration is ready for cutover when `CurrentRestoringFilename` is equal to `
 
 ## Performing cutover
 
-With an online migration, a full backup and restore of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob.
+With an online migration, a restore of provided backups of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob.
 
 When the database in a Azure SQL VM is updated with latest data and is in sync with the source database, you can perform a cutover.
 

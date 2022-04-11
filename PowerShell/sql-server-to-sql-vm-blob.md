@@ -19,6 +19,16 @@ In this article, we perform a online migration of the Adventureworks database re
 
 **Note:** Please run the commands in Powershell 5.x as an Administrator as Register-AzDataMigrationIntegrationRuntime command requires admin permissions. 
 
+## Azure login 
+
+Before we get started with managing azure resources with Azure PowerShell we need to login into azure and set our default subscription.
+
+In the following example we login using the `Connect-AzAccount` command and select a particular subscription by passing `-Subscription` command.
+
+```
+Connect-AzAccount -Subscription <Subscription-id>
+```
+
 ## Create a Resource Group
 
 An Azure resource group is a logical container in which Azure resources are deployed and managed.
@@ -131,7 +141,7 @@ The migration is ready for cutover when `CurrentRestoringFilename` is equal to `
 
 ## Performing cutover
 
-With an online migration, a full backup and restore of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob storage.
+With an online migration, a restore of provided backups of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the Blob storage.
 
 When the database in a Azure SQL Virtual Machine is updated with latest data and is in sync with the source database, you can perform a cutover.
 
