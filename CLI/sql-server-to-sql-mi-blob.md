@@ -11,6 +11,7 @@ In this article, we perform a online migration of the Adventureworks database re
 
 **Note 1**: The query parameter shown in this tutorial works with powershell only and not with cmd. If you are using cmd, manually copy and paste the parameters mentioned.
 
+**Note 2:** You can add `--debug` parameter to debug command execution. 
 
 ## Prerequisites
 
