@@ -9,7 +9,9 @@ In this article, we perform a online migration of the Adventureworks database re
 - Start an online migration
 - Perform cutover for the online migration
 
-**Note:** Please run the commands in PowerShell 5.x as an Administrator as Register-AzDataMigrationIntegrationRuntime command requires admin permissions. 
+**Note 1:** Please run the commands in PowerShell 5.x as an Administrator as Register-AzDataMigrationIntegrationRuntime command requires admin permissions. 
+
+**Note 2:** You can add `-Debug` parameter to debug cmdlet execution. 
 
 ## Prerequisites
 
@@ -28,6 +30,12 @@ In the following example we login using the `Connect-AzAccount` command and sele
 
 ```
 Connect-AzAccount -Subscription <Subscription-id>
+```
+
+If you have already logged into azure through PowerShell and want to change to subscription you are working with, please use the following command to change your subscription.
+
+```
+Set-AzContext -Subscription <Subscription-id>
 ```
 
 ## Create a Resource Group

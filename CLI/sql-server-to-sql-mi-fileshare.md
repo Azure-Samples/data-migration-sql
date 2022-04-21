@@ -17,7 +17,9 @@ In this article, we perform a online migration of the Adventureworks database re
 
 **Note 1**: The query parameter shown in this tutorial works with powershell only and not with cmd. If you are using cmd, please manually copy and paste the parameters mentioned.
 
-**Note 2:** Please run the commands as an Administrator as <span style="color: rgb(163, 21, 21); font-family: Menlo, Monaco, Consolas, &quot;Droid Sans Mono&quot;, &quot;Courier New&quot;, monospace, &quot;Droid Sans Fallback&quot;; font-size: 12px;">az datamigration register-integration-runtime</span> command requires admin permissions.
+**Note 2:** Please run the commands as an Administrator as `az datamigration register-integration-runtime` command requires admin permissions.
+
+**Note 3:** You can add `--debug` parameter to debug command execution. 
 
 ## Prerequisites
 
