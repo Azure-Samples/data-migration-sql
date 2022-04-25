@@ -1,7 +1,7 @@
 
 ## Perfoming Online Migration
 
-In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure PowerShell. You can migrate databases from a SQL Server instance to an SQL Database Instance by using the Az.DataMigration module in Microsoft Azure PowerShell.
+In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure PowerShell. Here, our backups files are present in Azure Blob storage. You can migrate databases from a SQL Server instance to an SQL Managed Instance by using the Az.DataMigration module in Microsoft Azure PowerShell.
 
 **In this article you learn how to**
 
