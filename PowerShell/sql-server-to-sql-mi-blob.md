@@ -128,7 +128,7 @@ New-AzDataMigrationToSqlManagedInstance `
     -SourceSqlConnectionAuthentication "SqlAuthentication" `
     -SourceSqlConnectionDataSource "LabServer.database.net" `
     -SourceSqlConnectionUserName "User" `
-    -SourceSqlConnectionPassword "password" `
+    -SourceSqlConnectionPassword $sourcePass `
     -SourceDatabaseName "AdventureWorks" `
     -Offline `
     -OfflineConfigurationLastBackupName "AdventureWorksTransactionLog2.trn"
