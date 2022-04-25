@@ -16,7 +16,7 @@ In this article, we perform a online migration of the Adventureworks database re
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
 - A SQL Virtual Machine with write access. You can create a SQL Virtual Machine by following the detail in the article [Create a SQL Virtual Machine](https://docs.microsoft.com/en-us/azure/azure-sql/virtual-machines/windows/sql-vm-create-portal-quickstart)
 - Azure blob storage with back up files.
-- Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0).
+- Latest version of Az.DataMigration installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration).
 
 
 ## Azure login 
@@ -83,6 +83,12 @@ Use the New-AzDataMigrationToSqlVM cmdlet to create and start a database migrati
 - _Offline_: Switch parameter used for performing offline migration.
 - _OfflineConfigurationLastBackupName_: Last backup file that will be restored.
 
+Before using the New- Cmdlet we will have to convert the passwords to secure strings. The following command does this.
+
+```
+$sourcePass = ConvertTo-SecureString "password" -AsPlainText -Force
+```
+
 The following example creates and starts a migration with target database name MyDb:
 
 ```
@@ -99,7 +105,7 @@ New-AzDataMigrationToSqlVM `
     -SourceSqlConnectionAuthentication "SqlAuthentication" `
     -SourceSqlConnectionDataSource "LabServer.database.net" `
     -SourceSqlConnectionUserName "User" `
-    -SourceSqlConnectionPassword "password" `
+    -SourceSqlConnectionPassword $sourcePass `
     -SourceDatabaseName "AdventureWorks"
 
 ```
@@ -120,7 +126,7 @@ New-AzDataMigrationToSqlVM `
     -SourceSqlConnectionAuthentication "SqlAuthentication" `
     -SourceSqlConnectionDataSource "LabServer.database.net" `
     -SourceSqlConnectionUserName "User" `
-    -SourceSqlConnectionPassword "password" `
+    -SourceSqlConnectionPassword $sourcePass `
     -SourceDatabaseName "AdventureWorks" `
     -Offline `
     -OfflineConfigurationLastBackupName "AdventureWorksTransactionLog2.trn"

@@ -1,7 +1,7 @@
 
 ## Perfoming Online Migration
 
-In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure PowerShell. Here our backups are stored in Azure Blob storage. You can migrate databases from a SQL Server instance to an SQL Managed Instance by using the Az.DataMigration module in Microsoft Azure PowerShell.
+In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure PowerShell. You can migrate databases from a SQL Server instance to an SQL Database Instance by using the Az.DataMigration module in Microsoft Azure PowerShell.
 
 **In this article you learn how to**
 
@@ -19,7 +19,7 @@ In this article, we perform a online migration of the Adventureworks database re
 - A SQL Managed Instance with write access. You can create a SQL Managed Instance by following the detail in the article [Create a SQL Managed Instance](https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/instance-create-quickstart)
 - To have run assessment on the source SQL server to see if the migration to SQL Managed Instance is possible or not.
 - Azure blob storage with back up files.
-- Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0).
+- Latest version of Az.DataMigration installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration).
 
 ## Azure login 
 
@@ -85,6 +85,13 @@ Use the New-AzDataMigrationToSqlManagedInstance cmdlet to create and start a dat
 - _Offline_: Switch parameter used for performing offline migration.
 - _OfflineConfigurationLastBackupName_: Last backup file that will be restored.
 
+Before using the New- Cmdlet we will have to convert the passwords to secure strings. The following command does this.
+
+```
+$sourcePass = ConvertTo-SecureString "password" -AsPlainText -Force
+```
+
+
 The following example creates and starts an online migration with target database name MyDb:
 
 ```
@@ -101,7 +108,7 @@ New-AzDataMigrationToSqlManagedInstance `
     -SourceSqlConnectionAuthentication "SqlAuthentication" `
     -SourceSqlConnectionDataSource "LabServer.database.net" `
     -SourceSqlConnectionUserName "User" `
-    -SourceSqlConnectionPassword "password" `
+    -SourceSqlConnectionPassword $sourcePass `
     -SourceDatabaseName "AdventureWorks"
 ```
 

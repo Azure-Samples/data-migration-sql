@@ -22,7 +22,7 @@ In this article, we perform a online migration of the Adventureworks database re
 - Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
 - To have run assessment on the source SQL server to see if the migration to SQL Managed Instance is possible or not.
 - This exercise expects that you already have details of Fileshare where the backups are stored and an Azure Storage Account.
-- Az.DataMigration Version 0.8.0 installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration/0.8.0).
+- Latest version of Az.DataMigration installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration).
 
 ## Azure login 
 
@@ -119,6 +119,13 @@ Use the New-AzDataMigrationToSqlManagedInstance cmdlet to create and start a dat
 - *StorageAccountKey*: The key of Storage Account.
 - *Offline*: Switch parameter used for performing offline migration.
 
+Before using the New- Cmdlet we will have to convert the passwords to secure strings. The following command does this.
+
+```
+$sourcePass = ConvertTo-SecureString "password" -AsPlainText -Force
+$sourcrFileSharePass = ConvertTo-SecureString "password" -AsPlainText -Force
+```
+
 The following example creates and starts an online migration with target database name MyDb:
 
 ```
@@ -133,11 +140,11 @@ New-AzDataMigrationToSqlManagedInstance `
     -StorageAccountKey "xxxxx" `
     -FileSharePath "\\filesharepath.com\SharedBackup\MyBackUps" `
     -FileShareUsername "filesharepath\User" `
-    -FileSharePassword "password" `
+    -FileSharePassword $sourceFileSharePass `
     -SourceSqlConnectionAuthentication "SqlAuthentication" `
     -SourceSqlConnectionDataSource "LabServer.database.net" `
     -SourceSqlConnectionUserName "User" `
-    -SourceSqlConnectionPassword "password" `
+    -SourceSqlConnectionPassword $sourcePass `
     -SourceDatabaseName "AdventureWorks"
 ```
 
@@ -156,11 +163,11 @@ New-AzDataMigrationToSqlManagedInstance `
     -StorageAccountKey "xxxxx" `
     -FileSharePath "\\filesharepath.com\SharedBackup\MyBackUps" `
     -FileShareUsername "filesharepath\User" `
-    -FileSharePassword "password" `
+    -FileSharePassword $sourceFileSharePass `
     -SourceSqlConnectionAuthentication "SqlAuthentication" `
     -SourceSqlConnectionDataSource "LabServer.database.net" `
     -SourceSqlConnectionUserName "User" `
-    -SourceSqlConnectionPassword "password" `
+    -SourceSqlConnectionPassword $sourcePass `
     -SourceDatabaseName "AdventureWorks" `
     -Offline
 ```
