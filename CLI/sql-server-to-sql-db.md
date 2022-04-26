@@ -24,7 +24,7 @@ In this article, we perform an offline migration of the Adventureworks database 
 
 - SQL Server with AdventureWorks database.
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
-- Azure SQL Database instance with write access. You can create Azure SQL Database instance by following the detail in the article [Create a SQL Database instance](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal)
+- Azure SQL Database with write access. You can create Azure SQL Database by following the detail in the article [Create a SQL Database](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal)
 - Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
 - A completed assessment on the source SQL server to see if the migration to Azure SQL Database is possible or not. 
 - Create Azure SQL Database and perform schema migration from source database to it. Please follow the instructions [here](https://www.mssqltips.com/sqlservertip/5455/using-the-data-migration-assistant-dma-tool-to-migrate-from-sql-server-to-azure-sql-database) to perform schema migration using DMA.
