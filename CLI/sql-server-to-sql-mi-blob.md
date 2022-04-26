@@ -52,7 +52,7 @@ az group create --name MyResourceGroup  --location EastUS2
 You can create new instance of Azure Database Migration Service by using the `az datamigration sql-service create` cmdlet. This cmdlet expects the following required parameters:
 
 - *Azure Resource Group name*: You can use [az group create](https://docs.microsoft.com/en-us/cli/azure/manage-azure-groups-azure-cli?view=azure-cli-latest) command to create an Azure Resource group as previously shown and provide its name as a parameter.
-- *SQL Migration Service name*: String that corresponds to the desired unique service name for Azure SQL Migration Service.
+- *SQL Migration Service name*: String that corresponds to the desired unique service name for Azure Database Migration Service.
 - *Location*: Specifies the location of the service. Specify an Azure data center location, such as West US or Southeast Asia.
 
 The following example creates a service named MySqlMigrationService in the resource group MyResourceGroup located in the East US 2 region.
@@ -152,7 +152,7 @@ $migOpId = az datamigration sql-managed-instance show --managed-instance-name "M
 az datamigration sql-managed-instance cutover --managed-instance-name "MyManagedInstance" --resource-group "MyResourceGroup" --target-db-name "Mydb" --migration-operation-id $migOpId
 ```
 
-## Delete SQL Migration Service Instance
+## Delete Database Migration Service Instance
 
 After the migration is complete, you can delete the Azure Database Migration Service instance:
 

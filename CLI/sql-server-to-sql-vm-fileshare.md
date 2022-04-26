@@ -60,7 +60,7 @@ az group create --name MyResourceGroup  --location EastUS2
 You can create new instance of Azure Database Migration Service by using the `az datamigration sql-service create` cmdlet. This cmdlet expects the following required parameters:
 
 - *Azure Resource Group name*: You can use [az group create](https://docs.microsoft.com/en-us/cli/azure/manage-azure-groups-azure-cli?view=azure-cli-latest) command to create an Azure Resource group as previously shown and provide its name as a parameter.
-- *SQL Migration Service name*: String that corresponds to the desired unique service name for Azure SQL Migration Service.
+- *SQL Migration Service name*: String that corresponds to the desired unique service name for Azure Database Migration Service.
 - *Location*: Specifies the location of the service. Specify an Azure data center location, such as West US or Southeast Asia.
 
 The following example creates a service named MySqlMigrationService in the resource group MyResourceGroup located in the East US 2 region.
@@ -72,8 +72,8 @@ az datamigration sql-service create --resource-group "MyResourceGroup" --sql-mig
 ## Register Database Migration Service with self-hosted Integration Runtime
 After creating the Database Migration Service, we need to register it on the Self-Hosted Integration Runtime. We register the service on IR using its AuthKeys which we can obtain using `az datamigration sql-service list-auth-key` command. This command expects the following parameters:
 
-- *Azure Resource Group name*: The resource group in which SQL Migration Service is present.
-- *SQL Migration Service name*: The name of the SQL Migration Service whose authkeys you want to obtain.
+- *Azure Resource Group name*: The resource group in which Database Migration Service is present.
+- *SQL Migration Service name*: The name of the Database Migration Service whose authkeys you want to obtain.
 
 The following example gets the authkeys of the service we previously created. We will be capturing the results of this command as we will be using it later on.
 
@@ -194,7 +194,7 @@ $migOpId = az datamigration sql-vm show --sql-vm-name "MySqlVM" --resource-grou
 az datamigration sql-vm cutover --sql-vm-name "MySqlDb" --resource-group "MyResourceGroup" --target-db-name "Mydb" --migration-operation-id $migOpId
 ```
 
-## Delete SQL Migration Service Instance
+## Delete Database Migration Service Instance
 
 After the migration is complete, you can delete the Azure Database Migration Service instance:
 
