@@ -1,12 +1,12 @@
 
 ## Perfoming Online Migration
 
-In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL Managed Instance by using Microsoft Azure PowerShell. Here, our backups files are present in Azure Blob storage. You can migrate databases from a SQL Server instance to an SQL Managed Instance by using the Az.DataMigration module in Microsoft Azure PowerShell.
+In this article, we perform a online migration of the Adventureworks database from SQL Server on-premises to an Azure SQL Managed Instance by using Microsoft Azure PowerShell. Here, our backups files are present in Azure Blob storage. You can migrate databases from a SQL Server instance to an Azure SQL Managed Instance by using the Az.DataMigration module in Microsoft Azure PowerShell.
 
 **In this article you learn how to**
 
 - Create a resource group
-- Create a SQL Migration Service
+- Create a Database Migration Service
 - Start an online migration
 - Perform cutover for the online migration
 
@@ -16,14 +16,14 @@ In this article, we perform a online migration of the Adventureworks database re
 
 - SQL Server with AdventureWorks database.
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
-- A SQL Managed Instance with write access. You can create a SQL Managed Instance by following the detail in the article [Create a SQL Managed Instance](https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/instance-create-quickstart)
-- To have run assessment on the source SQL server to see if the migration to SQL Managed Instance is possible or not.
+- Azure SQL Managed Instance with write access. You can create Azure SQL Managed Instance by following the detail in the article [Create a SQL Managed Instance](https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/instance-create-quickstart)
+- A completed assessment on the source SQL server to see if the migration to Azure SQL Managed Instance is possible or not.
 - Azure blob storage with back up files.
 - Latest version of Az.DataMigration installed from [here](https://www.powershellgallery.com/packages/Az.DataMigration).
 
 ## Azure login 
 
-Before we get started with managing azure resources with Azure PowerShell we need to login into azure and set our default subscription.
+Before we get started with managing Azure resources with Azure PowerShell we need to login into Azure and set our default subscription.
 
 In the following example we login using the `Connect-AzAccount` command and select a particular subscription by passing `-Subscription` command.
 
@@ -31,7 +31,7 @@ In the following example we login using the `Connect-AzAccount` command and sele
 Connect-AzAccount -Subscription <Subscription-id>
 ```
 
-If you have already logged into azure through PowerShell and want to change to subscription you are working with, please use the following command to change your subscription.
+If you have already logged into Azure through PowerShell and want to change to subscription you are working with, please use the following command to change your subscription.
 
 ```
 Set-AzContext -Subscription <Subscription-id>
@@ -49,12 +49,12 @@ The following example creates a resource group named myResourceGroup in the East
 New-AzResourceGroup -ResourceGroupName MyResourceGroup -Location EastUS2
 ```
 
-## Create an instance of SQL Migration Service
+## Create an instance of Database Migration Service
 
-You can create new instance of Azure SQL Migration Service by using the `New-AzDataMigrationSqlService` cmdlet. This cmdlet expects the following required parameters:
+You can create new instance of Azure Database Migration Service by using the `New-AzDataMigrationSqlService` cmdlet. This cmdlet expects the following required parameters:
 
 - _Azure Resource Group name_: You can use [New-AzResourceGroup](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroup) command to create an Azure Resource group as previously shown and provide its name as a parameter.
-- _SQL Migration Service name (or Name)_: String that corresponds to the desired unique service name for Azure SQL Migration Service.
+- _SQL Migration Service name (or Name)_: String that corresponds to the desired unique service name for Azure Database Migration Service.
 - _Location_: Specifies the location of the service. Specify an Azure data center location, such as West US or Southeast Asia.
 
 The following example creates a service named MySqlMigrationService in the resource group MyResourceGroup located in the East US 2 region.
@@ -69,17 +69,17 @@ When using azure blob storage for backups, we don't need to register Migration S
 Use the New-AzDataMigrationToSqlManagedInstance cmdlet to create and start a database migration. This cmdlet expects the following parameters:
 
 - _ManagedInstanceName_: Target Managed Instance to which source database is being migrated to.
-- _ResourceGroupName_: Resource group in which SQL Managed Instance is present.
-- _TargetDatabaseName_: The name with which the database will be stored in SQL Managed Instance.
-- _Scope_: Resource Id of the SQL Managed Instance.
+- _ResourceGroupName_: Resource group in which Azure SQL Managed Instance is present.
+- _TargetDatabaseName_: The name of the migrated database in Azure SQL Managed Instance.
+- _Scope_: Resource Id of the Azure SQL Managed Instance.
 - _Kind_: Kind of Target to which migration is being performed. "SqlMi" in this case.
-- _MigrationService_: Resource Id of the SQL Migration Service that will be used to orchestrate the migration. The migration service should be in the same region as Managed Instance.
-- _SourceDatabaseName_: Name of the source database that is being migrated to SQL Managed Instance.
+- _MigrationService_: Resource Id of the Database Migration Service that will be used to orchestrate the migration. The migration service should be in the same region as Azure SQL Managed Instance.
+- _SourceDatabaseName_: Name of the source database that is being migrated to Azure SQL Managed Instance.
 - _SourceSqlConnectionAuthentication_: The authentication type for connection, which can be either SqlAuthentication or WindowsAuthentication.
 - _SourceSqlConnectionDataSource_: The name or IP of a SQL Server instance.
 - _SourceSqlConnectionUserName_: Username of the SQL Server instance.
 - _SourceSqlConnectionPassword_: Password of the SQL Server instance.
-- _AzureBlobStorageAccountResourceId_: Resource Id of the blob storage account with backup files.
+- _AzureBlobStorageAccountResourceId_: Resource Id of the Azure blob storage account with backup files.
 - _AzureBlobAccountKey_: The key of Azure Blob Account.
 - _AzureBlobContainerName_: Container in Azure Blob Account with backup files.
 - _Offline_: Switch parameter used for performing offline migration.
@@ -175,9 +175,9 @@ $miMigration = Get-AzDataMigrationToSqlManagedInstance -ResourceGroupName "MyRes
 #Perform Cutover 
 Invoke-AzDataMigrationCutoverToSqlManagedInstance -ResourceGroupName "MyResourceGroup" -ManagedInstanceName "MyManagedInstance" -TargetDbName "MyDb" -MigrationOperationId $miMigration.MigrationOperationId
 ```
-## Delete SQL Migration Service Instance
+## Delete Database Migration Service Instance
 
-After the migration is complete, you can delete the Azure SQL Migration Service instance:
+After the migration is complete, you can delete the Azure Database Migration Service instance:
 
 ```
 Remove-AzDataMigrationSqlService -ResourceGroupName "MyResourceGroup" -Name "MySqlMigrationService"
