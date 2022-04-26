@@ -1,17 +1,17 @@
 Note: 
 
 - <b>Please run the commands in Azure CLI Administrator Mode as az datamigration register-integration-runtime command requires admin permissions.</b>
-- <b> Both Migration Service and Managed Instance/Virtual Machine/ SQL Database instance must be in the same location.</b>
+- <b> Both Migration Service and Azure SQL Managed Instance or SQL Server on Azure Virtual Machine or Azure SQL Database  must be in the same location.</b>
 
 ## Perfoming Migration
 
-In this article, we perform a offline migration of the Adventureworks database of an on-premises instance of SQL Server to an Azure SQL Database by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to an SQL Database by using the DataMigration extension in Microsoft Azure CLI.
+In this article, we perform an offline migration of the Adventureworks database from SQL Server on-premises to an Azure SQL Database by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to Azure SQL Database by using the DataMigration extension in Microsoft Azure CLI.
 
 **In this article you learn how to**
 
 - Create a resource group
-- Create a SQL Migration Service
-- Register the SQL Migration Service on Integration Runtime
+- Create a Database Migration Service
+- Register the Database Migration Service with self-hosted Integration Runtime
 - Start an migration
 
 **Note 1**: The query parameter shown in this tutorial works with PowerShell only and not with cmd. If you are using cmd, please manually copy and paste the parameters mentioned.
@@ -24,16 +24,16 @@ In this article, we perform a offline migration of the Adventureworks database o
 
 - SQL Server with AdventureWorks database.
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
-- A SQL Database instance with write access. You can create a SQL Database instance by following the detail in the article [Create a SQL Database instance](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal)
+- Azure SQL Database instance with write access. You can create Azure SQL Database instance by following the detail in the article [Create a SQL Database instance](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal)
 - Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
-- To have run assessment on the source SQL server to see if the migration to SQL Database instance is possible or not. 
-- Create a SQL Database in the SQL Database instance and perform schema migration from source database to it. Please follow the instructions [here](https://www.mssqltips.com/sqlservertip/5455/using-the-data-migration-assistant-dma-tool-to-migrate-from-sql-server-to-azure-sql-database) to perform schema migration using DMA.
+- A completed assessment on the source SQL server to see if the migration to Azure SQL Database is possible or not. 
+- Create Azure SQL Database and perform schema migration from source database to it. Please follow the instructions [here](https://www.mssqltips.com/sqlservertip/5455/using-the-data-migration-assistant-dma-tool-to-migrate-from-sql-server-to-azure-sql-database) to perform schema migration using DMA.
 - Azure CLI installed. You can do it using `pip install azure-cli` or follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 - `az datamigtation`  CLI extension installed. You can do it using `az extension add --name datamigration`.
 
 ## Azure login 
 
-Before we get started with managing azure resources with Azure CLI we need to login into azure and set our default subscription.
+Before we get started with managing Azure resources with Azure CLI we need to login into Azure and set our default subscription.
 
 In the following example we login using the `az login` command and select a particular subscription with `az account set` command.
 
@@ -56,9 +56,9 @@ az group create --name MyResourceGroup  --location EastUS2
 ```
 
 
-## Create an instance of SQL Migration Service
+## Create an instance of Database Migration Service
 
-You can create new instance of Azure SQL Migration Service by using the `az datamigration sql-service create` cmdlet. This cmdlet expects the following required parameters:
+You can create new instance of Azure Database Migration Service by using the `az datamigration sql-service create` cmdlet. This cmdlet expects the following required parameters:
 
 - _Azure Resource Group name_: You can use [az group create](https://docs.microsoft.com/en-us/cli/azure/manage-azure-groups-azure-cli?view=azure-cli-latest) command to create an Azure Resource group as previously shown and provide its name as a parameter.
 - _SQL Migration Service name_: String that corresponds to the desired unique service name for Azure SQL Migration Service.
@@ -70,9 +70,9 @@ The following example creates a service named MySqlMigrationService in the resou
 az datamigration sql-service create --resource-group "MyResourceGroup" --sql-migration-service-name "MySqlMigrationService" --location "EastUS2"
 ```
 
-## Register SQL Migration Service on Integration Runtime
+## Register Database Migration Service with self-hosted Integration Runtime
 
-After creating the SQL Migration Service, we need to register it on the Self-Hosted Integration Runtime. We register the service on IR using its AuthKeys which we can obtain using `az datamigration sql-service list-auth-key` command. This command expects the following parameters:
+After creating the Database Migration Service, we need to register it on the Self-Hosted Integration Runtime. We register the service on IR using its AuthKeys which we can obtain using `az datamigration sql-service list-auth-key` command. This command expects the following parameters:
 
 - _Azure Resource Group name_: The resource group in which SQL Migration Service is present.
 - _SQL Migration Service name_: The name of the SQL Migration Service whose authkeys you want to obtain.
@@ -85,7 +85,7 @@ $authKey1 = az datamigration sql-service list-auth-key --resource-group "MyResou
 
 We will be using these authkeys to register the service on Integration Runtime. `az datamigration register-integration-runtime` expects the following parameters:
 
-- _AuthKey_: Authkey of the SQL Migration Service you want to register on IR.
+- _AuthKey_: Authkey of the Database Migration Service you want to register on IR.
 - _Integration Runtime Path_: If the IR is not installed, you can pass its .MSI path as parameter to this command.
 
 In the following example, we pass the previously obtained authkeys and the path of Integration Runtime .MSI to install Integration Runtime and register the service on it.
@@ -104,22 +104,22 @@ az datamigration register-integration-runtime --auth-key $authKey1
 
 Use the `az datamigration sql-db create` cmdlet to create and start a database migration. This cmdlet expects the following parameters:
 
-- *--sqldb-instance-name*: Target SQL Database instance to which source database is being migrated to.
-- *--resource-group*: Resource group in which SQL Database instance is present.  
-- *--target-db-name*: The name with which the database will be stored in SQL Database instance.
-- *--scope*: Resource Id of the SQL Database instance.
-- *--migration-service*: Resource Id of the SQL Migration Service that will be used to orchestrate the migration. The migration service should be in the same region as SQL Database instance.
-- *--source-database-name*: Name of the source database that is being migrated to SQL Database instance.
+- *--sqldb-instance-name*: Target SQL Database logical server to which source database is being migrated to.
+- *--resource-group*: Resource group in which Azure SQL Database is present.   
+- *--target-db-name*: The name of the migrated database in Azure SQL Database.
+- *--scope*: Resource Id of the Azure SQL Database logical server.
+- *--migration-service*: Resource Id of the Database Migration Service that will be used to orchestrate the migration. The migration service should be in the same region as Azure SQL Database.
+- *--source-database-name*: Name of the source database that is being migrated to Azure SQL Database.
 - *--source-sql-connection*: Source SQL connection, which has below parameters.
   - *authentication*: The authentication type for connection, which can be either SqlAuthentication or WindowsAuthentication.
   - *data-source*: The name or IP of a SQL Server instance.
   - *user-name*: Username of the SQL Server instance.
   - *password*: Password of the SQL Server instance.
-- *--target-sql-connection*: Target SQL connection (SQL Database Instance), which has below parameters.
+- *--target-sql-connection*: Target SQL connection (Azure SQL Database), which has below parameters.
   - *authentication*: The authentication type for connection, which can be either SqlAuthentication or WindowsAuthentication.
-  - *data-source*: The name or IP of a SQL Database instance.
-  - *user-name*: Username of the SQL Database instance.
-  - *password*: Password of the SQL Database instance.
+  - *data-source*: The name or IP of Azure SQL Database logical server.
+  - *user-name*: Username to connect to Azure SQL Database.
+  - *password*: Password to connect to Azure SQL Database.
 - *--table-list*: In case if only selected tables are required to be migrated use this parameter to provide space separated table names. 
 
 
@@ -172,7 +172,7 @@ The migration is by default offline, so no cutover is required. The migration is
 
 ## Delete SQL Migration Service Instance
 
-After the migration is complete, you can delete the Azure SQL Migration Service instance:
+After the migration is complete, you can delete the Azure Database Migration Service instance:
 
 ```
 az datamigration sql-service delete --sql-migration-service-name "MySqlMigrationService" --resource-group "MyResourceGroup"

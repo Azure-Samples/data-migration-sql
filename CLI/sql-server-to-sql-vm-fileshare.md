@@ -1,17 +1,17 @@
 Note: 
 
 - <b>Please run the commands in Azure CLI Administrator Mode as az datamigration register-integration-runtime command requires admin permissions.</b>
-- <b> Both Migration Service and Managed Instance/Virtual Machine must be in the same location.</b>
+- <b> Both Migration Service and Azure SQL Managed Instance or SQL Server on Azure Virtual Machine or Azure SQL Database  must be in the same location.</b>
 
 ## Perfoming Online Migration
 
-In this article, we perform a online migration of the Adventureworks database restored to an on-premises instance of SQL Server to an Azure SQL VM by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to an SQL VM by using the DataMigration extension in Microsoft Azure CLI.
+In this article, we perform a online migration of the Adventureworks database from SQL Server on-premises to a SQL Server running on Azure Virtual Machine by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to a SQL Server running on Azure Virtual Machine by using the DataMigration extension in Microsoft Azure CLI.
 
 **In this article you learn how to**
 
 - Create a resource group
-- Create a SQL Migration Service
-- Register the SQL Migration Service on Integration Runtime
+- Create a Database Migration Service
+- Register the Database Migration Service with self-hosted Integration Runtime
 - Start an online migration
 - Perform cutover for the online migration
 
@@ -25,7 +25,7 @@ In this article, we perform a online migration of the Adventureworks database re
 
 - SQL Server with AdventureWorks database.
 - An Azure subscription. If you don't have one, [create a free account](https://azure.microsoft.com/free/) before you begin.
-- A SQL Virtual Machine with write access. You can create a SQL Virtual Machine by following the detail in the article [Create a SQL Virtual Machine](https://docs.microsoft.com/en-us/azure/azure-sql/virtual-machines/windows/sql-vm-create-portal-quickstart)
+- Azure SQL Virtual Machine with write access. You can create Azure SQL Virtual Machine by following the detail in the article [Create a SQL Virtual Machine](https://docs.microsoft.com/en-us/azure/azure-sql/virtual-machines/windows/sql-vm-create-portal-quickstart)
 - Already installed Integration Runtime or its downloaded .MSI. You can download it from [here](https://www.microsoft.com/en-in/download/details.aspx?id=39717).
 - This exercise expects that you already have details of Fileshare where backups are stored and an Azure Storage Account.
 - Azure CLI installed. You can do it using `pip install azure-cli` or follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
@@ -33,7 +33,7 @@ In this article, we perform a online migration of the Adventureworks database re
 
 ## Azure login 
 
-Before we get started with managing azure resources with Azure CLI we need to login into azure and set our default subscription.
+Before we get started with managing Azure resources with Azure CLI we need to login into Azure and set our default subscription.
 
 In the following example we login using the `az login` command and select a particular subscription with `az account set` command.
 
@@ -55,9 +55,9 @@ The following example creates a resource group named myResourceGroup in the East
 az group create --name MyResourceGroup  --location EastUS2 
 ```
 
-## Create an instance of SQL Migration Service
+## Create an instance of Database Migration Service
 
-You can create new instance of Azure SQL Migration Service by using the `az datamigration sql-service create` cmdlet. This cmdlet expects the following required parameters:
+You can create new instance of Azure Database Migration Service by using the `az datamigration sql-service create` cmdlet. This cmdlet expects the following required parameters:
 
 - *Azure Resource Group name*: You can use [az group create](https://docs.microsoft.com/en-us/cli/azure/manage-azure-groups-azure-cli?view=azure-cli-latest) command to create an Azure Resource group as previously shown and provide its name as a parameter.
 - *SQL Migration Service name*: String that corresponds to the desired unique service name for Azure SQL Migration Service.
@@ -69,8 +69,8 @@ The following example creates a service named MySqlMigrationService in the resou
 az datamigration sql-service create --resource-group "MyResourceGroup" --sql-migration-service-name "MySqlMigrationService" --location "EastUS2"
 ```
 
-## Register SQL Migration Service on Integration Runtime
-After creating the SQL Migration Service, we need to register it on the Self-Hosted Integration Runtime. We register the service on IR using its AuthKeys which we can obtain using `az datamigration sql-service list-auth-key` command. This command expects the following parameters:
+## Register Database Migration Service with self-hosted Integration Runtime
+After creating the Database Migration Service, we need to register it on the Self-Hosted Integration Runtime. We register the service on IR using its AuthKeys which we can obtain using `az datamigration sql-service list-auth-key` command. This command expects the following parameters:
 
 - *Azure Resource Group name*: The resource group in which SQL Migration Service is present.
 - *SQL Migration Service name*: The name of the SQL Migration Service whose authkeys you want to obtain.
@@ -83,7 +83,7 @@ $authKey1 = az datamigration sql-service list-auth-key --resource-group "MyResou
 
 We will be using these authkeys to register the service on Integration Runtime. `az datamigration register-integration-runtime` expects the following parameters:
 
-- *AuthKey*: Authkey of the SQL Migration Service you want to register on IR.
+- *AuthKey*: Authkey of the Database Migration Service you want to register on IR.
 - *Integration Runtime Path*: If the IR is not installed, you can pass its .MSI path as parameter to this command.
 
 In the following example, we pass the previously obtained authkeys and the path of Integration Runtime .MSI to install Integration Runtime and register the service on it. 
@@ -103,11 +103,11 @@ az datamigration register-integration-runtime --auth-key $authKey1
 Use the `az datamigration sql-vm create` cmdlet to create and start a database migration. This cmdlet expects the following parameters:
 
 - *--sql-vm-name*: Target SQL Virtual Machine to which source database is being migrated to.
-- *--resource-group*: Resource group in which SQL VM is present.  
-- *--target-db-name*: The name with which the database will be stored in SQL VM.
-- *--scope*: Resource Id of the SQL VM.
-- *--migration-service*: Resource Id of the SQL Migration Service that will be used to orchestrate the migration. The migration service should be in the same region as VM.
-- *--source-database-name*: Name of the source database that is being migrated to SQL VM.
+- *--resource-group*: Resource group in which Azure SQL Virtual Machine is present.  
+- *--target-db-name*: The name with which the database will be stored in Azure SQL Virtual Machine.
+- *--scope*: Resource Id of the Azure SQL Virtual Machine.
+- *--migration-service*: Resource Id of the Database Migration Service that will be used to orchestrate the migration. The migration service should be in the same region as Azure SQL Virtual Machine.
+- *--source-database-name*: Name of the source database that is being migrated to Azure SQL Virtual Machine.
 - *--source-sql-connection*: Source SQL connection, which has below parameters.
   - *authentication*: The authentication type for connection, which can be either SqlAuthentication or WindowsAuthentication.
   - *data-source*: The name or IP of a SQL Server instance.
@@ -117,7 +117,7 @@ Use the `az datamigration sql-vm create` cmdlet to create and start a database m
   - *path*: Actual source location path
   - *username*: Username of the fileshare.
   - *password*: Password of the fileshare
-- *--target-location*: Target location of the storage account for uploading backup files, which has below parameters.
+- *--target-location*: Target location of the Azure storage account for uploading backup files, which has below parameters.
   - *account-key*: The key of Storage Account.
   - *storage-account-resource-id*: Resource Id of the storage account for uploading backup files
 - *--offline-configuration*: Config parameter used for performing offline migration.
@@ -175,7 +175,7 @@ The migration is ready for cutover when `PendingLogBackupCount` is zero and `IsB
 
 With an online migration, a restore of provided backups of databases is performed, and then work proceeds on restoring the Transaction Logs stored in the BackupFileShare.
 
-When the database in a Azure SQL VM is updated with latest data and is in sync with the source database, you can perform a cutover.
+When the database in a Azure SQL Virtual Machine is updated with latest data and is in sync with the source database, you can perform a cutover.
 
 We can perform cutover using the command `az datamigration sql-vm cutover`. This command accepts the following parameters:
 
@@ -196,7 +196,7 @@ az datamigration sql-vm cutover --sql-vm-name "MySqlDb" --resource-group "MyReso
 
 ## Delete SQL Migration Service Instance
 
-After the migration is complete, you can delete the Azure SQL Migration Service instance:
+After the migration is complete, you can delete the Azure Database Migration Service instance:
 
 ```
 az datamigration sql-service delete --sql-migration-service-name "MySqlMigrationService" --resource-group "MyResourceGroup"
