@@ -97,6 +97,8 @@ foreach ($k in $serversAndDatabases)
         {   
             $NewDatabaseMigrationParameters.SourceDatabaseName = $DB
             $NewDatabaseMigrationParameters.TargetDbName = $DB
+            $NewDatabaseMigrationParameters.FileSharePath = $NewDatabaseMigrationParameters.FileSharePath + '\' + $DB + '\'
+            
             try{
                 Write-Host "Starting Migration for Database $DB"
                 $instance = New-AzDataMigrationToSqlManagedInstance @NewDatabaseMigrationParameters -ErrorAction Continue
@@ -117,6 +119,7 @@ foreach ($k in $serversAndDatabases)
         {
             $NewDatabaseMigrationParameters.SourceDatabaseName = $DB
             $NewDatabaseMigrationParameters.TargetDbName = $DB
+            $NewDatabaseMigrationParameters.FileSharePath = $NewDatabaseMigrationParameters.FileSharePath + '\' + $DB + '\'
             
             Write-Host "Starting Migration for Database $DB"
             try{
