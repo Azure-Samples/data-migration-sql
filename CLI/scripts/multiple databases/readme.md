@@ -19,7 +19,7 @@ user-config.json contains some user decisions. The parameters in user-config.jso
 
 - *WaitTillCompletion* : If set to true, the script waits till migration is completed (Succeded or failed). Only works for offline migrations.
 - *Cutover* : If set to true, the script waits till the database is ready for cutover and then initiates cutover. Only for online migrations. (For SqlMi/SqlVm Migration else keep null)
-- *Offline* : If set to true, all the migrations are done in offline mode or any of the migrations is to SqlDb. No cutover is done to any migraitions if set to true, therefore only use it for offline or SqlDb Migrations. 
+- *OfflineOrSqlDb* : If set to true, all the migrations are done in offline mode or any of the migrations is to SqlDb. No cutover is done to any migraitions if set to true, therefore only use it for offline or SqlDb Migrations. 
 
 Sample user-config.json file :-
 ```Json
