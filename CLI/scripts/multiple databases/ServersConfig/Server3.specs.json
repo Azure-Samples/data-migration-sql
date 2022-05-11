@@ -1,0 +1,22 @@
+{
+    "ResourceGroupName": "RG2",
+    "Scope": "/subscriptions/111111-11111-11111-111111/resourceGroups/RG/providers/providers/Microsoft.Sql/servers/AzureServer2",
+    "MigrationService": "/subscriptions/111111-11111-11111-111111/resourceGroups/RG/providers/Microsoft.DataMigration/SqlMigrationServices/DMSIR2",
+    "SourceSqlConnectionAuthentication": "SqlAuthentication",
+    "SourceSqlConnectionDataSource": "Server2",
+    "SourceSqlConnectionUserName": "<placeholder>",
+    "SourceSqlConnectionPassword": "<placeholder>",
+    "TargetSqlConnectionAuthentication": "SqlAuthentication",
+    "TargetSqlConnectionDataSource": "AzureServer2.database.windows.net",
+    "TargetSqlConnectionUserName": "<placeholder>",
+    "TargetSqlConnectionPassword": "<placeholder>",
+    "Kind": "SqlDb",
+    "ManagedInstanceName": null,
+    "SqlVirtualMachineName": null,
+    "SqlDbInstanceName": "AzureServer2",
+    "StorageAccountResourceId": null,
+    "StorageAccountKey": null,
+    "Server2Database1_LastBackupName": null,
+    "Server2Database2_LastBackupName": null,
+    "BlobFileshare": null
+  }
