@@ -21,12 +21,12 @@ $DMSName = $Inputs.DMSName
 function InstallRegisterIR([string]$ResourceGroup, [string]$DMS)
 {  
     # Getting the auth keys for the given DMS
-    $AuthKeys = Get-AzDataMigrationSqlServiceAuthKey -ResourceGroupName $ResourceGroup -SqlMigrationServiceName $DMS
+    $AuthKeys = Get-AzDataMigrationSqlServiceAuthKey -ResourceGroupName $ResourceGroup -SqlMigrationServiceName $DMS -WarningAction SilentlyContinue
     
     # Installing the IR and then registering :-
     if($InstallIR -eq $true)
     {        
-        Register-AzDataMigrationIntegrationRuntime -AuthKey $AuthKeys.AuthKey1 -IntegrationRuntimePath $IRPath
+        Register-AzDataMigrationIntegrationRuntime -AuthKey $AuthKeys.AuthKey1 -IntegrationRuntimePath $IRPath 
     }
     # If IR is already installed , just registration is required :-
     else
@@ -35,11 +35,11 @@ function InstallRegisterIR([string]$ResourceGroup, [string]$DMS)
     }
     
     #Wait till dms status shows online
-    $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup
+    $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup -WarningAction SilentlyContinue
     while($dmsDetails.IntegrationRuntimeState -eq "Offline" -Or $dmsDetails.IntegrationRuntimeState -eq "NeedRegistration")
     {
         Start-Sleep -Seconds 5
-        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup       
+        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup -WarningAction SilentlyContinue       
     }
 
     Write-Host "SHIR registration completed successfully" -ForegroundColor Green
@@ -51,14 +51,14 @@ function DmsSetup()
     if ($NewDMS -eq $true)
     {   
         # This creates a new SQL DMS
-        New-AzDataMigrationSqlService -ResourceGroupName $NewDMSRG -SqlMigrationServiceName $NewDMSName -Location $NewDMSLocation
+        New-AzDataMigrationSqlService -ResourceGroupName $NewDMSRG -SqlMigrationServiceName $NewDMSName -Location $NewDMSLocation -WarningAction SilentlyContinue
         #Since the DMS is new, it needs registration
         InstallRegisterIR $NewDMSRG $NewDMSName
     }
     # If the user is using an existing DMS, check if it requires registration
     else 
     {   
-        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMSName -ResourceGroupName $DMSRG 
+        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMSName -ResourceGroupName $DMSRG -WarningAction SilentlyContinue
         if($dmsDetails.IntegrationRuntimeState -eq "Offline" -Or $dmsDetails.IntegrationRuntimeState -eq "NeedRegistration")
         {   
             # Since the DMS was offline or needed registration , register it

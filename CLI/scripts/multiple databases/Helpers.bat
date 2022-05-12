@@ -52,10 +52,13 @@ cmd /c exit -1073741510
 
 
 @rem GET expanded migration status details for SQL VM or SQL MI depending on the Target
-@rem Syntax to call - CALL :GetMigrationDetails ResourceGroupName ManagedInstanceName/SqlVmName TargetDbName Kind
+@rem Syntax to call - CALL :GetMigrationDetails ResourceGroupName ManagedInstanceName/SqlVmName/SqlDbName TargetDbName Kind
 :GetMigrationDetails
 If "%~4" == "SqlMi" (
    CALL az datamigration sql-managed-instance show --managed-instance-name "%~2" --resource-group "%~1" --target-db-name "%~3" --expand MigrationStatusDetails > JsonDump\_migrationStatus_%~3.json 
+) 
+If "%~4" == "SqlDb" (
+   CALL az datamigration sql-db show --sqldb-instance-name "%~2" --resource-group "%~1" --target-db-name "%~3" --expand MigrationStatusDetails > JsonDump\_migrationStatus_%~3.json 
 ) ELSE (
    CALL az datamigration sql-vm show --resource-group "%~1" --sql-vm-name "%~2" --target-db-name "%~3" --expand MigrationStatusDetails > JsonDump\_migrationStatus_%~3.json
 )
@@ -136,9 +139,14 @@ CALL :ReturnValueJson SourceSqlConnectionAuthentication "SourceSqlConnectionAuth
 CALL :ReturnValueJson SourceSqlConnectionDataSource "SourceSqlConnectionDataSource" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson SourceSqlConnectionUserName "SourceSqlConnectionUserName" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson SourceSqlConnectionPassword "SourceSqlConnectionPassword" "ServersConfig\%~1.specs.json"
+CALL :ReturnValueJson TargetSqlConnectionAuthentication "TargetSqlConnectionAuthentication" "ServersConfig\%~1.specs.json"
+CALL :ReturnValueJson TargetSqlConnectionDataSource "TargetSqlConnectionDataSource" "ServersConfig\%~1.specs.json"
+CALL :ReturnValueJson TargetSqlConnectionUserName "TargetSqlConnectionUserName" "ServersConfig\%~1.specs.json"
+CALL :ReturnValueJson TargetSqlConnectionPassword "TargetSqlConnectionPassword" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson Kind "Kind" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson ManagedInstanceName "ManagedInstanceName" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson SqlVirtualMachineName "SqlVirtualMachineName" "ServersConfig\%~1.specs.json"
+CALL :ReturnValueJson SqlDbInstanceName "SqlDbInstanceName" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson StorageAccountResourceId "StorageAccountResourceId" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson StorageAccountKey "StorageAccountKey" "ServersConfig\%~1.specs.json"
 CALL :ReturnValueJson BlobFileshare "BlobFileshare" "ServersConfig\%~1.specs.json"
@@ -148,9 +156,13 @@ CALL :NumberOfItemsTxt NumberOfDbs "ServersConfig\%~1.db.txt"
 
 SET cmdTargetMi=az datamigration sql-managed-instance create --managed-instance-name "!ManagedInstanceName!"
 SET cmdTargetVm=az datamigration sql-vm create --sql-vm-name "!SqlVirtualMachineName!"
-SET cmdCommonParam=--source-location "@ServersConfig\%~1.source-location.json" --migration-service "!MigrationService!" --scope "!Scope!" --source-sql-connection authentication="!SourceSqlConnectionAuthentication!" data-source="!SourceSqlConnectionDataSource!" password="!SourceSqlConnectionPassword!" user-name="!SourceSqlConnectionUserName!" --resource-group "!ResourceGroupName!"
+SET cmdTargetDb=az datamigration sql-db create --sqldb-instance-name "!SqlDbInstanceName!"
+SET cmdCommonParam=--migration-service "!MigrationService!" --scope "!Scope!" --source-sql-connection authentication="!SourceSqlConnectionAuthentication!" data-source="!SourceSqlConnectionDataSource!" password="!SourceSqlConnectionPassword!" user-name="!SourceSqlConnectionUserName!" --resource-group "!ResourceGroupName!"
 SET cmdTargetLocation=--target-location account-key="!StorageAccountKey!" storage-account-resource-id="!StorageAccountResourceId!"
+SET cmdTargetSqlConnection=--target-sql-connection authentication="!TargetSqlConnectionAuthentication!" data-source="!TargetSqlConnectionDataSource!" password="!TargetSqlConnectionPassword!" user-name="!TargetSqlConnectionUserName!"
 SET cmdOffline=--offline-configuration offline=!Offline!
+
+@REM These cmdFinalParam will be used only for MI and VM. For SQL DB we use cmdCommonParam
 SET cmdFinalParam=!cmdCommonParam!
 
 If "!BlobFileshare!" == "fileshare" SET cmdFinalParam=!cmdFinalParam! !cmdTargetLocation!
@@ -163,8 +175,8 @@ If "!Offline!" == "true" (
    )
 )
 
-for /l %%i in (1, 1, !NumberOfDbs!+1) do (
-   CALL :ReturnValueTxt DBName %%i "ServersConfig\%~1.db.txt"
+for /l %%j in (1, 1, !NumberOfDbs!+1) do (
+   CALL :ReturnValueTxt DBName %%j "ServersConfig\%~1.db.txt"
    SET cmdDBParam=--source-database-name "!DBName!" --target-db-name "!DBName!"
    
    If !BlobOffline! == 1 (
@@ -174,9 +186,12 @@ for /l %%i in (1, 1, !NumberOfDbs!+1) do (
 
    ECHO --------------- Starting Migration to !Kind! for TargetDB !DBName! ---------------
    If "!Kind!" == "SqlMi" (
-      CALL !cmdTargetMi! !cmdFinalParam! !cmdDBParam!> JsonDump\_migrationStatusCreate_!DBName!.json
+      CALL !cmdTargetMi! !cmdFinalParam! !cmdDBParam! --source-location "@ServersConfig\!DBName!.source-location.json"> JsonDump\_migrationStatusCreate_!DBName!.json
+   ) 
+   If "!Kind!" == "SqlDb" (
+      CALL !cmdTargetDb! !cmdCommonParam! !cmdTargetSqlConnection! !cmdDBParam!> JsonDump\_migrationStatusCreate_!DBName!.json
    ) ELSE (
-      CALL !cmdTargetVm! !cmdFinalParam! !cmdDBParam!> JsonDump\_migrationStatusCreate_!DBName!.json
+      CALL !cmdTargetVm! !cmdFinalParam! !cmdDBParam! --source-location "@ServersConfig\!DBName!.source-location.json"> JsonDump\_migrationStatusCreate_!DBName!.json
    )
    set ProvisioningState=Null
    CALL :ReturnValueJson ProvisioningState "provisioningState" "JsonDump\_migrationStatusCreate_!DBName!.json"
@@ -185,6 +200,10 @@ for /l %%i in (1, 1, !NumberOfDbs!+1) do (
       If "!Kind!" == "SqlMi" (
          ECHO !ResourceGroupName! !ManagedInstanceName! !DBName! !Kind! >> "RuntimeTexts\InProgressMigrations.txt"
          ECHO !ResourceGroupName! !ManagedInstanceName! !DBName! !Kind! >> "RuntimeTexts\StartedMigrations.txt"
+      )
+      If "!Kind!" == "SqlDb" (
+         ECHO !ResourceGroupName! !SqlDbInstanceName! !DBName! !Kind! >> "RuntimeTexts\InProgressMigrations.txt"
+         ECHO !ResourceGroupName! !SqlDbInstanceName! !DBName! !Kind! >> "RuntimeTexts\StartedMigrations.txt"
       ) ELSE (
          ECHO !ResourceGroupName! !SqlVirtualMachineName! !DBName! !Kind! >> "RuntimeTexts\InProgressMigrations.txt"
          ECHO !ResourceGroupName! !SqlVirtualMachineName! !DBName! !Kind! >> "RuntimeTexts\StartedMigrations.txt"
@@ -194,6 +213,9 @@ for /l %%i in (1, 1, !NumberOfDbs!+1) do (
       ECHO --------------- Refer to _migrationStatusCreate_!DBName!.json for more details ---------------
       If "!Kind!" == "SqlMi" (
          ECHO !ResourceGroupName! !ManagedInstanceName! !DBName! !Kind! >> "RuntimeTexts\FailedMigrations.txt"
+      )
+      If "!Kind!" == "SqlDb" (
+         ECHO !ResourceGroupName! !SqlDbInstanceName! !DBName! !Kind! >> "RuntimeTexts\FailedMigrations.txt"
       ) ELSE (
          ECHO !ResourceGroupName! !SqlVirtualMachineName! !DBName! !Kind! >> "RuntimeTexts\FailedMigrations.txt"
       )

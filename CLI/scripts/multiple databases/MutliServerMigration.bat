@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 @rem Reading the user-config.json parameters
 CALL :ReturnValueJson WaitTillCompletion "WaitTillCompletion" "user-config.json"
 CALL :ReturnValueJson Cutover "Cutover" "user-config.json"
-CALL :ReturnValueJson Offline "Offline" "user-config.json"
+CALL :ReturnValueJson Offline "OfflineOrSqlDb" "user-config.json"
 
 ECHO --------------- JSON Variables loaded and Execution started ---------------
 

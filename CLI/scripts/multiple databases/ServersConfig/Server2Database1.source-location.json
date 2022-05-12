@@ -1,6 +1,6 @@
 {
   "fileShare": {
-    "path": "<Server2-Backup-fileshare-path>",
+    "path": "<Server2Database1-Backup-fileshare-path>",
     "password": "<Placeholder>",
     "username": "<Placeholder>"
   }

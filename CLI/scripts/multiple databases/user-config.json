@@ -1,5 +1,5 @@
 {
   "WaitTillCompletion": true,
-  "Cutover": true,
-  "Offline": false
+  "Cutover": false,
+  "OfflineOrSqlDb": true
 }

@@ -2,31 +2,39 @@
     "ResourceGroupName": null,
     
     "Scope": null,
-    "MigrationService": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms20211030",
+    "MigrationService": null,
 
-    "StorageAccountResourceId": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Storage/storageAccounts/migrationtest",
-    "StorageAccountKey": "xxxxx",
+    "StorageAccountResourceId": null,
+    "StorageAccountKey": null,
 
     "SourceSqlConnectionAuthentication": null,
     "SourceSqlConnectionDataSource": null,
     "SourceSqlConnectionUserName": null,
     "SourceSqlConnectionPassword": null,
 
+    "TargetSqlConnectionAuthentication": null,
+    "TargetSqlConnectionDataSource": null,
+    "TargetSqlConnectionPassword": null,
+    "TargetSqlConnectionUserName": null,
+    
+
     "SourceDatabaseName": null,
     "TargetDbName": null,
     
     "Kind": null,
-    "ManagedInstanceName": "migrationtestmi",
-    "SqlVirtualMachineName": "DMSCmdletTest-SqlVM",
+    "ManagedInstanceName": null,
+    "SqlVirtualMachineName": null,
+    "SqlDbInstanceName": null,
 
-    "FileSharePath": "\\\\SQLServer001\\SharedBackup\\user",
-    "FileShareUsername": "DOMAIN\\testlocaluser",
-    "FileSharePassword": "testAdmin123",
+    "FileSharePath": null,
+    "FileShareUsername": null,
+    "FileSharePassword": null,
 
-    "AzureBlobAccountKey": "xxxxx",
-    "AzureBlobContainerName": "tsum38-adventureworks",
-    "AzureBlobStorageAccountResourceId": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Storage/storageAccounts/teststorage",
-    "OfflineConfigurationLastBackupName": "",
+    "AzureBlobAccountKey": null,
+    "AzureBlobContainerName": null,
+    "AzureBlobStorageAccountResourceId": null,
+    "OfflineConfigurationLastBackupName": null,
 
-    "Offline": null
+    "Offline": null,
+    "WarningAction": "SilentlyContinue"
 }

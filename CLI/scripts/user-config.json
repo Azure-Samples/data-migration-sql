@@ -5,7 +5,7 @@
   "NewDMSName": "NewDMSIR",
   "DMSName": "DMSIR",
   "DMSRG": "RG",
-  "BlobFileshare": "blob",
+  "BlobFileshare": null,
   "WaitTillCompletion": true,
   "Cutover": true
 }

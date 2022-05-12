@@ -14,38 +14,99 @@ if($BlobFileshare -ne "blob" -And $BlobFileshare -ne "fileshare")
     Write-Host "Invalid value provided for the parameter 'BlobFileshare' . The valid values are : blob , fileshare "
     $inputsValid = $false
 }
-#This portion makes sure that we provide only one of  (fileshare or blob) parameters
-if($BlobFileshare -eq "fileshare")
+
+# takes plain text and returns secure string
+function toSecureString([string] $plain)
 {
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobStorageAccountResourceId')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobContainerName')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobAccountKey')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('OfflineConfigurationLastBackupName')
-}
-if($BlobFileshare -eq "blob")
-{
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePath')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('FileShareUsername')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePassword')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountResourceId')
-    $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountKey')
+$secure = ConvertTo-SecureString $plain -AsPlainText -Force
+return $secure
 }
 
-#This portion makes sure that we provide only one of (SQL MI or SQL VM ) related parameters
+
+
+
+#This portion makes sure that we provide only one of (SQL MI or SQL VM or SQL DB) related parameters
 $Kind =  $NewDatabaseMigrationInfo.Kind
 
 if($Kind -eq "SqlMi")
 {
     $NewDatabaseMigrationInfo.PSObject.properties.remove('SqlVirtualMachineName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('SqlDbInstanceName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionAuthentication')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionDataSource')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionPassword')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionUserName')
+    #This portion makes sure that we provide only one of  (fileshare or blob) parameters
+    if($BlobFileshare -eq "fileshare")
+    {
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobStorageAccountResourceId')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobContainerName')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobAccountKey')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('OfflineConfigurationLastBackupName')
+        #fileshare psssword to secure string
+        $NewDatabaseMigrationInfo.FileSharePassword = toSecureString $NewDatabaseMigrationInfo.FileSharePassword ;
+    }
+    if($BlobFileshare -eq "blob")
+    {
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePath')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('FileShareUsername')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePassword')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountResourceId')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountKey')
+    }
 }
-if($Kind -eq "SqlVm")
+elseif($Kind -eq "SqlVm")
 {
     $NewDatabaseMigrationInfo.PSObject.properties.remove('ManagedInstanceName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('SqlDbInstanceName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionAuthentication')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionDataSource')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionPassword')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('TargetSqlConnectionUserName')
+    #This portion makes sure that we provide only one of  (fileshare or blob) parameters
+    if($BlobFileshare -eq "fileshare")
+    {
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobStorageAccountResourceId')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobContainerName')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobAccountKey')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('OfflineConfigurationLastBackupName')
+        #fileshare psssword to secure string
+        $NewDatabaseMigrationInfo.FileSharePassword = toSecureString $NewDatabaseMigrationInfo.FileSharePassword ;
+    }
+    if($BlobFileshare -eq "blob")
+    {
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePath')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('FileShareUsername')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePassword')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountResourceId')
+        $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountKey')
+    }
+}
+else{
+    
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('SqlVirtualMachineName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('ManagedInstanceName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePath')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('FileShareUsername')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('FileSharePassword')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountResourceId')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('StorageAccountKey')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobStorageAccountResourceId')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobContainerName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('AzureBlobAccountKey')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('OfflineConfigurationLastBackupName')
+    $NewDatabaseMigrationInfo.PSObject.properties.remove('Offline')
+    #target password to secure string
+    $NewDatabaseMigrationInfo.TargetSqlConnectionPassword = toSecureString $NewDatabaseMigrationInfo.TargetSqlConnectionPassword ;   
 }
 
 # Storing the parameters in $NewDatabaseMigrationInfo in a dictionary $NewDatabaseMigrationParameters which can be directly passed to New-AzDataMigrationToSqlManagedInstance / New-AzDataMigrationToSqlVM commandlets.
 $NewDatabaseMigrationParameters = @{};
 $NewDatabaseMigrationInfo.psobject.properties | Foreach{ $NewDatabaseMigrationParameters[$_.Name] = $_.Value };
+
+#Changing the source sql connection password to secure string
+$NewDatabaseMigrationParameters.SourceSqlConnectionPassword = toSecureString $NewDatabaseMigrationParameters.SourceSqlConnectionPassword ;
+
 
 # Storing some parameter values that are frequently used.
 $Kind = $NewDatabaseMigrationParameters["Kind"]
@@ -53,6 +114,7 @@ $ResourceGroupName = $NewDatabaseMigrationParameters["ResourceGroupName"]
 $TargetDbName = $NewDatabaseMigrationParameters["TargetDbName"]
 $ManagedInstanceName = $NewDatabaseMigrationParameters["ManagedInstanceName"]
 $SqlVirtualMachineName = $NewDatabaseMigrationParameters["SqlVirtualMachineName"]
+$SqlDbInstanceName = $NewDatabaseMigrationParameters["SqlDbInstanceName"]
 
 # Parameter telling whether the user wants to perform cutover (true/false).
 $Cutover = $Inputs.Cutover
@@ -72,13 +134,32 @@ $DMSName = $Inputs.DMSName
 # Parameter telling whether the user wants to keep checking mnigration status until it succeeds or fails.
 $WaitTillCompletion = $Inputs.WaitTillCompletion
 
+
+######################## a section to assign default bool values in case user did not assign any in user-config.json
+if($Cutover -eq $null)
+{
+$Cutover = $false
+}
+if($NewDMS -eq $null)
+{
+$NewDMS = $false
+}
+if($InstallIR -eq $null)
+{
+$InstallIR = $false
+}
+if($WaitTillCompletion -eq $null)
+{
+$WaitTillCompletion = $false
+}
+
 ##############################Functions#######################################################
 
 # This function installs IR (if needed) and registers a DMS to it.
 function InstallRegisterIR([string]$ResourceGroup, [string]$DMS)
 {  
     # Getting the auth keys for the given DMS
-    $AuthKeys = Get-AzDataMigrationSqlServiceAuthKey -ResourceGroupName $ResourceGroup -SqlMigrationServiceName $DMS
+    $AuthKeys = Get-AzDataMigrationSqlServiceAuthKey -ResourceGroupName $ResourceGroup -SqlMigrationServiceName $DMS -WarningAction SilentlyContinue
     
     # Installing the IR and then registering :-
     if($InstallIR -eq $true)
@@ -92,11 +173,11 @@ function InstallRegisterIR([string]$ResourceGroup, [string]$DMS)
     }
     
     #Wait till dms status shows online
-    $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup
+    $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup -WarningAction SilentlyContinue
     while($dmsDetails.IntegrationRuntimeState -eq "Offline" -Or $dmsDetails.IntegrationRuntimeState -eq "NeedRegistration")
     {
         Start-Sleep -Seconds 5
-        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup       
+        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMS -ResourceGroupName $ResourceGroup -WarningAction SilentlyContinue      
     }
 
     Write-Host "SHIR registration completed successfully" -ForegroundColor Green
@@ -107,11 +188,14 @@ function GetDatabaseMigrationDetails()
 {
     if($Kind -eq "SqlMi")
     {
-        $MigrationDetails =  Get-AzDataMigrationToSqlManagedInstance -ManagedInstanceName $ManagedInstanceName -ResourceGroupName $ResourceGroupName -TargetDbName $TargetDbName -Expand MigrationStatusDetails
+        $MigrationDetails =  Get-AzDataMigrationToSqlManagedInstance -ManagedInstanceName $ManagedInstanceName -ResourceGroupName $ResourceGroupName -TargetDbName $TargetDbName -Expand MigrationStatusDetails -WarningAction SilentlyContinue
     }
-    else
+    elseif($Kind -eq "SqlVm")
     {
-        $MigrationDetails =  Get-AzDataMigrationToSqlVM -SqlVirtualMachineName $SqlVirtualMachineName -ResourceGroupName $ResourceGroupName -TargetDbName $TargetDbName -Expand MigrationStatusDetails
+        $MigrationDetails =  Get-AzDataMigrationToSqlVM -SqlVirtualMachineName $SqlVirtualMachineName -ResourceGroupName $ResourceGroupName -TargetDbName $TargetDbName -Expand MigrationStatusDetails -WarningAction SilentlyContinue
+    }
+    else{
+        $MigrationDetails =  Get-AzDataMigrationToSqlDb -SqlDbInstanceName $SqlDbInstanceName -ResourceGroupName $ResourceGroupName -TargetDbName $TargetDbName -Expand MigrationStatusDetails -WarningAction SilentlyContinue
     }
 
     return $MigrationDetails
@@ -121,7 +205,7 @@ function GetDatabaseMigrationDetails()
 function WaitTillReadyForCutover([string]$BlobFileshare)
 {  
     Write-Host "Waiting for migration to be ready for cutover" -ForegroundColor Green
-    $MigrationDetails = GetDatabaseMigrationDetails
+    $MigrationDetails = GetDatabaseMigrationDetails -WarningAction SilentlyContinue
     # In case blob is used, the migration is ready for cutover when CurrentRestoringFilename is same as LastRestoringFileName
     if($BlobFileshare -eq "blob")
     {
@@ -189,11 +273,11 @@ function PerformCutover()
     {
         if($Kind -eq "SqlMi")
         {
-            Invoke-AzDataMigrationCutoverToSqlManagedInstance -ResourceGroupName $ResourceGroupName -ManagedInstanceName $ManagedInstanceName -TargetDbName  $TargetDbName -MigrationOperationId $MigrationDetails.MigrationOperationId
+            Invoke-AzDataMigrationCutoverToSqlManagedInstance -ResourceGroupName $ResourceGroupName -ManagedInstanceName $ManagedInstanceName -TargetDbName  $TargetDbName -MigrationOperationId $MigrationDetails.MigrationOperationId -WarningAction SilentlyContinue
         }
         else
         {
-            Invoke-AzDataMigrationCutoverToSqlVM -ResourceGroupName $ResourceGroupName -SqlVirtualMachineName $SqlVirtualMachineName -TargetDbName  $TargetDbName -MigrationOperationId $MigrationDetails.MigrationOperationId
+            Invoke-AzDataMigrationCutoverToSqlVM -ResourceGroupName $ResourceGroupName -SqlVirtualMachineName $SqlVirtualMachineName -TargetDbName  $TargetDbName -MigrationOperationId $MigrationDetails.MigrationOperationId -WarningAction SilentlyContinue
         }
         Write-Host "Cutover initiated" -ForegroundColor Green
     }
@@ -240,30 +324,34 @@ function NewDatabaseMigration()
     if($Kind -eq "SqlMi")
     {   
         # Start the migration to managed instance
-        $instance = New-AzDataMigrationToSqlManagedInstance @NewDatabaseMigrationParameters      
+        $instance = New-AzDataMigrationToSqlManagedInstance @NewDatabaseMigrationParameters   
+    }
+    elseif($Kind -eq "SqlVm")
+    {
+        # Start the migration to SQL VM
+        $instance = New-AzDataMigrationToSqlVM @NewDatabaseMigrationParameters 
     }
     else
     {
-        # Start the migration to SQL VM
-        $instance = New-AzDataMigrationToSqlVM @NewDatabaseMigrationParameters             
+       $instance = New-AzDataMigrationToSqlDb @NewDatabaseMigrationParameters              
     }
     Write-Host "Migration started" -ForegroundColor Green
-
 }
+
 function main()
 {
     # If the user has chosen to create a new SQL DMS
     if ($NewDMS -eq $true)
     {
         # This creates a new SQL DMS
-        New-AzDataMigrationSqlService -ResourceGroupName $NewDMSRG -SqlMigrationServiceName $NewDMSName -Location $NewDMSLocation
+        New-AzDataMigrationSqlService -ResourceGroupName $NewDMSRG -SqlMigrationServiceName $NewDMSName -Location $NewDMSLocation -WarningAction SilentlyContinue 
         #Since the DMS is new, it needs registration
         InstallRegisterIR $NewDMSRG $NewDMSName
     }
     # If the user is using an existing DMS, check if it requires registration
     else 
     { 
-        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMSName -ResourceGroupName $DMSRG 
+        $dmsDetails = Get-AzDataMigrationSqlService -Name $DMSName -ResourceGroupName $DMSRG -WarningAction SilentlyContinue
         if($dmsDetails.IntegrationRuntimeState -eq "Offline" -Or $dmsDetails.IntegrationRuntimeState -eq "NeedRegistration")
         {
             # Since the DMS was offline , register it
@@ -277,7 +365,7 @@ function main()
     $MigrationDetails = GetDatabaseMigrationDetails
 
     # If user wants to perform cutover on an online migration :-
-    if($Cutover -eq $true -And $MigrationDetails.OfflineConfigurationOffline -ne $true)
+    if($Cutover -eq $true -And $MigrationDetails.OfflineConfigurationOffline -ne $true )
     {
         PerformCutover
     }
@@ -285,9 +373,14 @@ function main()
     # If user wants to wait till Migration is succeeded :-
     if($WaitTillCompletion -eq $true)
     {
+        if($MigrationDetails.OfflineConfigurationOffline -ne $true -And $Cutover -eq $false)  # Online Migration case (needs cutover to be performed for a complete migration)
+        {
+            PerformCutover
+        }
         WaitForCompleteMigration
     }
 }
+
 if($inputsValid -eq $true)
 {
     main

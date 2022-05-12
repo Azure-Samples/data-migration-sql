@@ -20,10 +20,15 @@ CALL :ReturnValue SourceSqlConnectionAuthentication "SourceSqlConnectionAuthenti
 CALL :ReturnValue SourceSqlConnectionDataSource "SourceSqlConnectionDataSource" "migration-db-config.json"
 CALL :ReturnValue SourceSqlConnectionUserName "SourceSqlConnectionUserName" "migration-db-config.json"
 CALL :ReturnValue SourceSqlConnectionPassword "SourceSqlConnectionPassword" "migration-db-config.json"
+CALL :ReturnValue TargetSqlConnectionAuthentication "TargetSqlConnectionAuthentication" "migration-db-config.json"
+CALL :ReturnValue TargetSqlConnectionDataSource "TargetSqlConnectionDataSource" "migration-db-config.json"
+CALL :ReturnValue TargetSqlConnectionUserName "TargetSqlConnectionUserName" "migration-db-config.json"
+CALL :ReturnValue TargetSqlConnectionPassword "TargetSqlConnectionPassword" "migration-db-config.json"
 CALL :ReturnValue SourceDatabaseName "SourceDatabaseName" "migration-db-config.json"
 CALL :ReturnValue Kind "Kind" "migration-db-config.json"
 CALL :ReturnValue ManagedInstanceName "ManagedInstanceName" "migration-db-config.json"
 CALL :ReturnValue SqlVirtualMachineName "SqlVirtualMachineName" "migration-db-config.json"
+CALL :ReturnValue SqlDbInstanceName "SqlDbInstanceName" "migration-db-config.json"
 CALL :ReturnValue StorageAccountResourceId "StorageAccountResourceId" "migration-db-config.json"
 CALL :ReturnValue StorageAccountKey "StorageAccountKey" "migration-db-config.json"
 CALL :ReturnValue AzureBlobAccountKey "Scope" "migration-db-config.json"
@@ -41,6 +46,10 @@ ECHO --------------- Created JsonDump Folder ---------------
 
 CALL :SetupDMS %NewDMS% %NewDMSRG% %NewDMSName% %NewDMSLocation% %DMSName% %DMSRG%
 CALL :StartMigration
+If "%Kind%" == "SqlDb" (
+   CALL :WaitForCompleteMigration
+   GOTO :ExitPoint
+)
 If "%Offline%" == "true" If "%WaitTillCompletion%" =="true" (
    CALL :WaitForCompleteMigration
 )
@@ -49,6 +58,7 @@ If "%Offline%" == "false" If "%Cutover%" == "true" (
    CALL :PerformCutover
 )
 
+:ExitPoint
 EXIT /B %ERRORLEVEL%
 
 @rem Function to get %~2 property from json file %~3
@@ -87,7 +97,7 @@ If "%~1" == "true" (
    CALL :ReturnValue ProvisioningState_Service "provisioningState" "JsonDump\_sqlserviceCreate.json"
    If "!ProvisioningState_Service!" == "Succeeded" (
       ECHO --------------- Created Database Migration Service ----------------
-      If "%BlobFileshare%" == "fileshare" CALL :RegisterIntegrationRuntime %~2 %~3
+      If NOT "%BlobFileshare%" == "blob" CALL :RegisterIntegrationRuntime %~2 %~3
    ) ELSE (
       ECHO --------------- FAILED: Creation failed of Database Migration Service ----------------
       CALL :ErrorCatchExit
@@ -95,7 +105,7 @@ If "%~1" == "true" (
 ) ELSE (
    ECHO --------------- Using existing Database Migration Service ---------------
    CALL az datamigration sql-service show -g "%~6" -n "%~5" > JsonDump\_sqlservice.json
-   If "%BlobFileshare%" == "fileshare" (
+   If NOT "%BlobFileshare%" == "blob" (
       set IntegrationRuntimeState=null
       CALL :ReturnValue IntegrationRuntimeState "integrationRuntimeState" "JsonDump\_sqlservice.json"
       If "!IntegrationRuntimeState!" == "null" (
@@ -118,6 +128,9 @@ EXIT /B 0
 :GetMigrationDetails
 If "%Kind%" == "SqlMi" (
    CALL az datamigration sql-managed-instance show --managed-instance-name "%ManagedInstanceName%" --resource-group "%ResourceGroupName%" --target-db-name "%TargetDbName%" --expand MigrationStatusDetails > JsonDump\_migrationStatus.json 
+) 
+If "%Kind%" == "SqlDb" (
+   CALL az datamigration sql-db show --sqldb-instance-name "%SqlDbInstanceName%" --resource-group "%ResourceGroupName%" --target-db-name "%TargetDbName%" --expand MigrationStatusDetails > JsonDump\_migrationStatus.json 
 ) ELSE (
    CALL az datamigration sql-vm show --resource-group "%ResourceGroupName%" --sql-vm-name "%SqlVirtualMachineName%" --target-db-name "%TargetDbName%" --expand MigrationStatusDetails > JsonDump\_migrationStatus.json
 )
@@ -183,11 +196,15 @@ EXIT /B 0
 Setlocal EnableDelayedExpansion
 SET cmdTargetMi=az datamigration sql-managed-instance create --managed-instance-name "%ManagedInstanceName%"
 SET cmdTargetVm=az datamigration sql-vm create --sql-vm-name "%SqlVirtualMachineName%"
-SET cmdCommonParam=--source-location "@source-location.json" --migration-service "%MigrationService%" --scope "%Scope%" --source-database-name "%SourceDatabaseName%" --source-sql-connection authentication="%SourceSqlConnectionAuthentication%" data-source="%SourceSqlConnectionDataSource%" password="%SourceSqlConnectionPassword%" user-name="%SourceSqlConnectionUserName%" --target-db-name "%TargetDbName%" --resource-group "%ResourceGroupName%" 
+SET cmdTargetDb=az datamigration sql-db create --sqldb-instance-name "%SqlDbInstanceName%"
+SET cmdCommonParam=--migration-service "%MigrationService%" --scope "%Scope%" --source-database-name "%SourceDatabaseName%" --source-sql-connection authentication="%SourceSqlConnectionAuthentication%" data-source="%SourceSqlConnectionDataSource%" password="%SourceSqlConnectionPassword%" user-name="%SourceSqlConnectionUserName%" --target-db-name "%TargetDbName%" --resource-group "%ResourceGroupName%" 
 SET cmdTargetLocation=--target-location account-key="%StorageAccountKey%" storage-account-resource-id="%StorageAccountResourceId%"
+SET cmdTargetSqlConnection=--target-sql-connection authentication="%TargetSqlConnectionAuthentication%" data-source="%TargetSqlConnectionDataSource%" password="%TargetSqlConnectionPassword%" user-name="%TargetSqlConnectionUserName%"
 SET cmdFileshareOffline=--offline-configuration offline=%Offline%
 SET cmdBlobOffline=--offline-configuration last-backup-name="%OfflineConfigurationLastBackupName%" offline=%Offline%
-SET cmdFinalParam=%cmdCommonParam%
+
+@REM These cmdFinalParam will be used only for MI and VM. For SQL DB we use cmdCommonParam
+SET cmdFinalParam=%cmdCommonParam% --source-location "@source-location.json"
 
 
 If "%BlobFileshare%" == "fileshare" SET cmdFinalParam=%cmdFinalParam% %cmdTargetLocation%
@@ -199,6 +216,9 @@ If "%Offline%" == "true" (
 ECHO --------------- Starting Migration to %Kind% for TargetDB %TargetDbName% ---------------
 If "%Kind%" == "SqlMi" (
    CALL %cmdTargetMi% %cmdFinalParam% > JsonDump\_migrationStatusCreate.json
+) 
+If "%Kind%" == "SqlDb" (
+   CALL %cmdTargetDb% %cmdCommonParam% %cmdTargetSqlConnection% > JsonDump\_migrationStatusCreate.json
 ) ELSE (
    CALL %cmdTargetVm% %cmdFinalParam% > JsonDump\_migrationStatusCreate.json
 )
@@ -219,8 +239,8 @@ EXIT /B 0
 
 :CheckMigrationStatusOffline
 ECHO Waiting for Offline migration to complete - %TargetDbName%
-CALL :GetMigrationDetails
 timeout /t 120
+CALL :GetMigrationDetails
 CALL :ReturnValue MigrationStatus "migrationStatus" "JsonDump\_migrationStatus.json"
 If NOT "%MigrationStatus%" == "InProgress" GOTO :ExitPointOffline
 If "%MigrationStatus%" == "InProgress" GOTO :CheckMigrationStatusOffline
