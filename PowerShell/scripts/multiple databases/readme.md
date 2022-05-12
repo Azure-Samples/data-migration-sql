@@ -7,7 +7,6 @@ This files contains some user decisions. The parameters in user-config.json are 
 "InstallIR" : set to true if SHIR needs installation
 "IRPath" : path where SHIR is downloaded (will be used only if InstallIR is set to true)
 "BlobFileshare" : (blob/fileshare)
-"Cutover" : if set to true, the script waits till the database is ready for cutover and then initiates cutover
 "WaitTillCompletion" : if set to true, the script waits till the migration status becomes "Suceeded" or "Failed"
 "LogFailedDbs" : If set to true, failed migrations are recorded in logs.json
 Sample user-config.json file :-
@@ -16,20 +15,19 @@ Sample user-config.json file :-
 {
     "NewDMS": false,
     "NewDMSLocation": "eastus2",
-    "NewDMSRG": "tsum38RG",
-    "NewDMSName": "scriptdms32",
-    "DMSName": "dms20211030",
-    "DMSRG": "tsum38RG",
+    "NewDMSRG": "myRG",
+    "NewDMSName": "mewDMS",
+    "DMSName": "dms",
+    "DMSRG": "myRG",
     "InstallIR": false,
     "IRPath": "",
     "BlobFileshare": "fileshare",
-    "Cutover": true,
     "LogFailedDbs": true
 }
 
 ```
 # migration-db-config.json 
-This file contains the parameters specific to a  new database migration.
+This file contains the parameters specific to a  new database migration. They are all null and will be filled up during the execution of the script
 Sample migration-db-config.json file :-
 
 ```
@@ -37,33 +35,41 @@ Sample migration-db-config.json file :-
     "ResourceGroupName": null,
     
     "Scope": null,
-    "MigrationService": "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/tsum38RG/providers/Microsoft.DataMigration/SqlMigrationServices/dms20211030",
+    "MigrationService": null,
 
-    "StorageAccountResourceId": "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/aaskhan/providers/Microsoft.Storage/storageAccounts/aasimmigrationtest",
-    "StorageAccountKey": "oEqjDHjf1N8SM4gPTVbMPlnN9u6PPHjzpsYvFIcpYYw98ux2CAdfM/5ePeuMa4PbAYBQv+4RApQ5Wz+VQV3dXA==",
+    "StorageAccountResourceId": null,
+    "StorageAccountKey": null,
 
     "SourceSqlConnectionAuthentication": null,
     "SourceSqlConnectionDataSource": null,
     "SourceSqlConnectionUserName": null,
     "SourceSqlConnectionPassword": null,
 
+    "TargetSqlConnectionAuthentication": null,
+    "TargetSqlConnectionDataSource": null,
+    "TargetSqlConnectionPassword": null,
+    "TargetSqlConnectionUserName": null,
+    
+
     "SourceDatabaseName": null,
     "TargetDbName": null,
     
     "Kind": null,
-    "ManagedInstanceName": "migrationtestmi",
-    "SqlVirtualMachineName": "DMSCmdletTest-SqlVM",
+    "ManagedInstanceName": null,
+    "SqlVirtualMachineName": null,
+    "SqlDbInstanceName": null,
 
-    "FileSharePath": "\\\\aalab03-2k8.redmond.corp.microsoft.com\\SharedBackup\\vmanhas",
-    "FileShareUsername": "AALAB03-2K8\\hijavatestlocaluser",
-    "FileSharePassword": "testAdmin123",
+    "FileSharePath": null,
+    "FileShareUsername": null,
+    "FileSharePassword": null,
 
-    "AzureBlobAccountKey": "kmJRR2wIwl8NMbTK/tRih7oueYNxKL0hTnonMjR4o2BiY1FDN4yof95GVJL3jBZaZEq1GuL3q1WMIDGCAizngQ==",
-    "AzureBlobContainerName": "tsum38-adventureworks",
-    "AzureBlobStorageAccountResourceId": "/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/tzppesignoff1211/providers/Microsoft.Storage/storageAccounts/hijavateststorage",
-    "OfflineConfigurationLastBackupName": "",
+    "AzureBlobAccountKey": null,
+    "AzureBlobContainerName": null,
+    "AzureBlobStorageAccountResourceId": null,
+    "OfflineConfigurationLastBackupName": null,
 
-    "Offline": null
+    "Offline": null,
+    "WarningAction": "SilentlyContinue"
 }
 
 ```
@@ -78,43 +84,110 @@ Sample migration-server-config.json :-
 
 ```
     {
-    "Servers" : [
-                {
-                    "SourceSqlConnectionAuthentication": "SqlAuthentication",
-                    "SourceSqlConnectionDataSource": "AALAB03-2K8.REDMOND.CORP.MICROSOFT.COM",
-                    "SourceSqlConnectionUserName": "hijavatestuser1",
-                    "SourceSqlConnectionPassword": "testAdmin123",
-                    "Kind": "SqlMi",
-                    "ResourceGroupName": "MigrationTesting",   
-                    "Scope": "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/MigrationTesting/providers/Microsoft.Sql/managedInstances/migrationtestmi",
-                    "BlobFileshare" : "fileshare",
-                    "Offline" : false,
-                    "DatabasesFromSourceSql" : false,                  
-                    "SqlQueryToGetDbs" : "select name from sys.databases where name not in ('master', 'tempdb', 'model', 'msdb') and is_distributor <> 1 and name like 'trgt'",
-                    "databases" : [
-                        "trgt",
-                        "AdventureWorks"                     
-                    ],
-                    "Cutover" : true
-                },
-                {
-                    "SourceSqlConnectionAuthentication": "SqlAuthentication",
-                    "SourceSqlConnectionDataSource": "AALAB03-2K8.REDMOND.CORP.MICROSOFT.COM",
-                    "SourceSqlConnectionUserName": "hijavatestuser1",
-                    "SourceSqlConnectionPassword": "testAdmin123",
-                    "Kind": "SqlMi",
-                    "BlobFileshare" : "fileshare",
-                    "Offline" : false,
-                    "ResourceGroupName": "tsum38RG",   
-                    "Scope": "/subscriptions/f133ff51-53dc-4486-a487-47049d50ab9e/resourceGroups/tsum38RG/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/DMSCmdletTest-SqlVM",
-                    "DatabasesFromSourceSql": true,
-                    "SqlQueryToGetDbs": "select name from sys.databases where name not in ('master', 'tempdb', 'model', 'msdb') and is_distributor <> 1 and name like 'trgt'",
-                    "databases" : [
-                        "trgt"
-                    ],
-                    "Cutover" : false
-                }
-                ]
+        "Servers" : [
+                    {
+                        "SourceSqlConnectionAuthentication": "SqlAuthentication",
+                        "SourceSqlConnectionDataSource": "abc.REDMOND.CORP.MICROSOFT.COM",
+                        "SourceSqlConnectionUserName": "user",
+                        "SourceSqlConnectionPassword": "password",
+                    
+                        "TargetSqlConnectionAuthentication": "SqlAuthentication",
+                        "TargetSqlConnectionDataSource": "sqldb.database.windows.net",
+                        "TargetSqlConnectionPassword": "pass123",
+                        "TargetSqlConnectionUserName": "user",
+                    
+                        "SourceDatabaseName": null,
+                        "TargetDbName": null,
+                    
+                        "MigrationService": "/subscriptions/11111-222222-333333333-2222-1111/resourceGroups/myRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms",
+                    
+                        "StorageAccountResourceId": "/subscriptions/11111-222222-333333333-2222-1111/resourceGroups/rg2/providers/Microsoft.Storage/storageAccounts/storage",
+                        "StorageAccountKey": "aaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccc",
+                    
+                        "Kind": "SqlMi",
+                        "ResourceGroupName": "migRG",   
+                    
+                        "Scope": "/subscriptions/11111-222222-333333333-2222-1111/resourceGroups/migRG/providers/Microsoft.Sql/managedInstances/mi",
+                    
+                        "BlobFileshare" : "fileshare",
+                    
+                        "Offline" : false,
+                    
+                        "ManagedInstanceName": "mi",
+                    
+                        "SqlVirtualMachineName": "my-SQLVM",
+
+                        "SqlDbInstanceName": "sqldb",
+
+                        "FileSharePath": "\\\\abc.redmond.corp.microsoft.com\\SharedBackup\\user",
+                        "FileShareUsername": "abc\\localuser",
+                        "FileSharePassword": "pass",
+
+                        "AzureBlobAccountKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "AzureBlobContainerName": "blob",
+                        "AzureBlobStorageAccountResourceId": "/subscriptions/111-222-111-222-3333/resourceGroups/rg1231/providers/Microsoft.Storage/storageAccounts/storage",
+                        "OfflineConfigurationLastBackupName": "",
+                    
+                        "DatabasesFromSourceSql" : false,                  
+                        "SqlQueryToGetDbs" : "select name from sys.databases where name not in ('master', 'tempdb', 'model', 'msdb') and is_distributor <> 1 and name like 'trgt'",
+                        "databases" : [
+                            "AdventureWorks"                     
+                        ],
+                    
+                        "Cutover" : true
+                    },
+                    {
+                        "SourceSqlConnectionAuthentication": "SqlAuthentication",
+                        "SourceSqlConnectionDataSource": "onpremsqlserver.fareast.corp.microsoft.com",
+                        "SourceSqlConnectionUserName": "user",
+                        "SourceSqlConnectionPassword": "pass",
+                    
+                        "TargetSqlConnectionAuthentication": "SqlAuthentication",
+                        "TargetSqlConnectionDataSource": "sqldb.database.windows.net",
+                        "TargetSqlConnectionPassword": "pass123",
+                        "TargetSqlConnectionUserName": "demouser",
+                    
+                        "SourceDatabaseName": null,
+                        "TargetDbName": null,
+                    
+                        "MigrationService": "/subscriptions/11111-222222-333333333-2222-1111/resourceGroups/myRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms",
+                    
+                        "StorageAccountResourceId": "/subscriptions/11111-222222-333333333-2222-1111/resourceGroups/rg2/providers/Microsoft.Storage/storageAccounts/storage",
+                        "StorageAccountKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    
+                        "Kind": "SqlDb",
+                        "ResourceGroupName": "myRG",   
+                    
+                        "Scope": "/subscriptions/11111-222222-333333333-2222-1111/resourceGroups/myRG/providers/Microsoft.Sql/servers/sqldb",
+                    
+                        "BlobFileshare" : "fileshare",
+                    
+                        "Offline" : true,
+                    
+                        "ManagedInstanceName": "mi",
+                    
+                        "SqlVirtualMachineName": "my-SQLVM",
+
+                        "SqlDbInstanceName": "sqldb",
+
+                        "FileSharePath": "\\\\abc.redmond.corp.microsoft.com\\SharedBackup\\vmanhas",
+                        "FileShareUsername": "abc\\localuser",
+                        "FileSharePassword": "pass",
+
+                        "AzureBlobAccountKey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                        "AzureBlobContainerName": "blob",
+                        "AzureBlobStorageAccountResourceId": "/subscriptions/111-222-111-222-3333/resourceGroups/rg1231/providers/Microsoft.Storage/storageAccounts/storage",
+                        "OfflineConfigurationLastBackupName": "",
+
+                        "DatabasesFromSourceSql" : false,                  
+                        "SqlQueryToGetDbs" : "select name from sys.databases where name not in ('master', 'tempdb', 'model', 'msdb') and is_distributor <> 1 and name like 'trgt'",
+                        "databases" : [
+                            "adv1"                    
+                        ],
+                    
+                        "Cutover" : true
+                    }
+                    ]
     }
     
 ```

@@ -17,16 +17,16 @@ user-config.json contains some user decisions. The parameters in user-config.jso
 
 Sample user-config.json file :-
 ```
-{
+ {
   "NewDMS": false,
-  "NewDMSLocation": "eastus2euap",
-  "NewDMSRG": "test388RG",
-  "NewDMSName": "script2",
-  "DMSName": "dms20211030",
-  "DMSRG": "test38RG",
+  "NewDMSLocation": "eastus2",
+  "NewDMSRG": "myRG",
+  "NewDMSName": "dms32",
+  "DMSName": "dms",
+  "DMSRG": "myRG",
   "InstallIR": false,
-  "IRPath": "C:\\Users\\testuser\\Downloads\\IntegrationRuntime_5.13.8013.1.msi",
-  "BlobFileshare": "fileshare",
+  "IRPath": "",
+  "BlobFileshare": "blob",
   "WaitTillCompletion": true,
   "Cutover": true
 }
@@ -41,22 +41,22 @@ For MI Online fileshare case :-
 
 ```
 {
-    "ResourceGroupName": "MigrationTesting",
-    "TargetDbName": "at_scriptFileMiOn2",
-    "Scope": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Sql/managedInstances/migrationtestmi",
-    "MigrationService": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms20211030",
-    "StorageAccountResourceId": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Storage/storageAccounts/migrationtest",
-    "StorageAccountKey": "xxxxx",
+    "ResourceGroupName": "migrationRG",
+    "TargetDbName": "abc",
+    "Scope": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/migrationRG/providers/Microsoft.Sql/managedInstances/myMI",
+    "MigrationService": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/myRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms",
+    "StorageAccountResourceId": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/rg2/providers/Microsoft.Storage/storageAccounts/storageabc",
+    "StorageAccountKey": "aaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccc",
     "SourceSqlConnectionAuthentication": "SqlAuthentication",
-    "SourceSqlConnectionDataSource": "SQLServer001",
-    "SourceSqlConnectionUserName": "testuser1",
-    "SourceSqlConnectionPassword": "testAdmin123",
+    "SourceSqlConnectionDataSource": "abc.REDMOND.CORP.MICROSOFT.COM",
+    "SourceSqlConnectionUserName": "user",
+    "SourceSqlConnectionPassword": "password",
     "SourceDatabaseName": "AdventureWorks",
     "Kind": "SqlMi",
-    "ManagedInstanceName": "migrationtestmi",
-    "FileSharePath": "\\\\SQLServer001\\SharedBackup\\loc",
-    "FileShareUsername": "DOMAIN\\testlocaluser",
-    "FileSharePassword": "testAdmin123",
+    "ManagedInstanceName": "myMI",
+    "FileSharePath": "\\\\abc.redmond.corp.microsoft.com\\SharedBackup\\user",
+    "FileShareUsername": "abc\\user",
+    "FileSharePassword": "password",
     "Offline": false
   }
 
@@ -66,20 +66,20 @@ For MI Offline blob case:-
 
 ```
   {
-    "ResourceGroupName": "MigrationTesting",
-    "TargetDbName": "at_scriptBlobMiOff",
-    "Scope": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Sql/managedInstances/migrationtestmi",
-    "MigrationService": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms20211030",
+    "ResourceGroupName": "migrationRG",
+    "TargetDbName": "abc2",
+    "Scope": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/migrationRG/providers/Microsoft.Sql/managedInstances/myMI",
+    "MigrationService": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/myRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms",
     "SourceSqlConnectionAuthentication": "SqlAuthentication",
-    "SourceSqlConnectionDataSource": "SQLServer001",
-    "SourceSqlConnectionUserName": "testuser1",
-    "SourceSqlConnectionPassword": "testAdmin123",
+    "SourceSqlConnectionDataSource": "abc.REDMOND.CORP.MICROSOFT.COM",
+    "SourceSqlConnectionUserName": "user",
+    "SourceSqlConnectionPassword": "password",
     "SourceDatabaseName": "AdventureWorks",
     "Kind": "SqlMi",
-    "ManagedInstanceName": "migrationtestmi",
-    "AzureBlobAccountKey": "xxxxx",
-    "AzureBlobContainerName": "t-adventureworks",
-    "AzureBlobStorageAccountResourceId": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Storage/storageAccounts/teststorage",
+    "ManagedInstanceName": "myMI",
+    "AzureBlobAccountKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccc",
+    "AzureBlobContainerName": "blob",
+    "AzureBlobStorageAccountResourceId": "/subscriptions/11-22222222222-3333333-222222-111111/resourceGroups/rg211/providers/Microsoft.Storage/storageAccounts/storage",
     "OfflineConfigurationLastBackupName": "AdventureWorksTransactionLog2.trn",
     "Offline": true
   }
@@ -89,21 +89,56 @@ For MI Online Blob case :-
 
 ```
   {
-    "ResourceGroupName": "MigrationTesting",
-    "TargetDbName": "at_scriptBlobMiOn2",
-    "Scope": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Sql/managedInstances/migrationtestmi",
-    "MigrationService": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms20211030",
+    "ResourceGroupName": "migrationRG",
+    "TargetDbName": "abc3",
+    "Scope": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/migrationRG/providers/Microsoft.Sql/managedInstances/myMI",
+    "MigrationService": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/myRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms",
     "SourceSqlConnectionAuthentication": "SqlAuthentication",
-    "SourceSqlConnectionDataSource": "SQLServer001",
-    "SourceSqlConnectionUserName": "testuser1",
-    "SourceSqlConnectionPassword": "testAdmin123",
+    "SourceSqlConnectionDataSource": "abc.REDMOND.CORP.MICROSOFT.COM",
+    "SourceSqlConnectionUserName": "user",
+    "SourceSqlConnectionPassword": "password",
     "SourceDatabaseName": "AdventureWorks",
     "Kind": "SqlMi",
-    "ManagedInstanceName": "migrationtestmi",
-    "AzureBlobAccountKey": "xxxxx",
-    "AzureBlobContainerName": "t-adventureworks",
-    "AzureBlobStorageAccountResourceId": "/subscriptions/MySubscriptionID/resourceGroups/MyRG/providers/Microsoft.Storage/storageAccounts/teststorage",
+    "ManagedInstanceName": "myMI",
+    "AzureBlobAccountKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccc",
+    "AzureBlobContainerName": "tsum38-adventureworks",
+    "AzureBlobStorageAccountResourceId": "/subscriptions/11-22222222222-3333333-222222-111111/resourceGroups/rg211/providers/Microsoft.Storage/storageAccounts/storage",
     "Offline": false
   }
+
+```
+For SQL DB case :-
+
+```
+  {
+  "ResourceGroupName": "myRG",
+  "TargetDbName": "abc4",
+  "Scope": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/myRG/providers/Microsoft.SqlVirtualMachine/SqlVirtualMachines/my-SQLVM",
+  "MigrationService": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/myRG/providers/Microsoft.DataMigration/SqlMigrationServices/dms",
+  "SourceSqlConnectionAuthentication": "SqlAuthentication",
+  "SourceSqlConnectionDataSource": "abc.REDMOND.CORP.MICROSOFT.COM",
+  "SourceSqlConnectionUserName": "user",
+  "SourceSqlConnectionPassword": "password",
+  "SourceDatabaseName": "AdventureWorks",
+  "Kind": "SqlVm",
+  "ManagedInstanceName": "myMI",
+  "SqlVirtualMachineName": "my-SQLVM",
+  "SqlDbInstanceName": "sqldb",
+  "TargetSqlConnectionAuthentication": "SqlAuthentication",
+  "TargetSqlConnectionDataSource": "sqldb.database.windows.net",
+  "TargetSqlConnectionPassword": "pass123",
+  "TargetSqlConnectionUserName": "user",
+  "FileSharePath": "\\\\abc.redmond.corp.microsoft.com\\SharedBackup\\user",
+  "FileShareUsername": "abc\\user",
+  "FileSharePassword": "password",
+  "StorageAccountResourceId": "/subscriptions/1111-2222-1111-2222-3333/resourceGroups/rg2/providers/Microsoft.Storage/storageAccounts/storageabc",
+  "StorageAccountKey": "aaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccc",
+  "AzureBlobAccountKey": "aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccc",
+  "AzureBlobContainerName": "blob",
+  "AzureBlobStorageAccountResourceId": "/subscriptions/11-22222222222-3333333-222222-111111/resourceGroups/rg211/providers/Microsoft.Storage/storageAccounts/storage",
+  "OfflineConfigurationLastBackupName": "AdventureWorksTransactionLog2.trn",
+  "Offline": true,
+  "WarningAction": "SilentlyContinue"
+}
 
 ```
