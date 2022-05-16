@@ -38,7 +38,8 @@ The config file has the following structure:
     "outputFolder": "C:\\Output",
     "overwrite":  "True",
     "sqlConnectionStrings": [
-        "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True;"
+        "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True;",
+        "Data Source=LabServer2.database.net;Initial Catalog=master;Integrated Security=True;"
     ]
 }
 ```
