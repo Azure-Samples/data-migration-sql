@@ -45,7 +45,8 @@ The config file has the following structure:
     "staticQueryIntervalInSec": 120,
     "numberOfIterations": 7,
     "sqlConnectionStrings": [
-        "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True;"
+        "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True;",
+        "Data Source=LabServer2.database.net;Initial Catalog=master;Integrated Security=True;"
     ]
 }
 ```

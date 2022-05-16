@@ -26,7 +26,7 @@ az datamigration get-assessment --connection-string "Data Source=LabServer.datab
 
 The command can be used as following for running assessment on multiple servers.
 ```
-az datamigration get-assessment --connection-string "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True", "Data Source=LabServer2.database.net;Initial Catalog=master;Integrated Security=True" --output-folder C:\Output --overwrite
+az datamigration get-assessment --connection-string "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True" "Data Source=LabServer2.database.net;Initial Catalog=master;Integrated Security=True" --output-folder C:\Output --overwrite
 ```
 
 ##Assessment using config file
@@ -40,7 +40,8 @@ The config file has the following structure:
     "outputFolder": "C:\\Output",
     "overwrite":  "True",
     "sqlConnectionStrings": [
-        "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True;"
+        "Data Source=LabServer1.database.net;Initial Catalog=master;Integrated Security=True;",
+        "Data Source=LabServer2.database.net;Initial Catalog=master;Integrated Security=True;"
     ]
 }
 ```
