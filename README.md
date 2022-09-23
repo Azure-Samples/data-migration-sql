@@ -30,7 +30,7 @@ End-to-End migration automation for multiple databases|[PowerShell](/PowerShell/
 Pre-requisites that are common across all supported migration scenarios using Azure PowerShell or Azure CLI are:
 
 * Have an Azure account that is assigned to one of the built-in roles listed below:
-    - Contributor for the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database (and Storage Account to upload your database backup files from SMB network share —*Not applicable for Azure SQL Database*).
+    - Contributor for the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database (Preview) and, Storage Account to upload your database backup files from SMB network share (*Not applicable for Azure SQL Database*).
     - Reader role for the Azure Resource Groups containing the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database (Preview).
     - Owner or Contributor role for the Azure subscription.
     > [!IMPORTANT]
