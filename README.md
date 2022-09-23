@@ -30,17 +30,17 @@ End-to-End migration automation for multiple databases|[PowerShell](/PowerShell/
 Pre-requisites that are common across all supported migration scenarios using Azure PowerShell or Azure CLI are:
 
 * Have an Azure account that is assigned to one of the built-in roles listed below:
-    - Contributor for the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database (and Storage Account to upload your database backup files from SMB network share).
-    - Reader role for the Azure Resource Groups containing the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database.
+    - Contributor for the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database (and Storage Account to upload your database backup files from SMB network share —*Not applicable for Azure SQL Database*).
+    - Reader role for the Azure Resource Groups containing the target Azure SQL Managed Instance, SQL Server on Azure Virtual Machines or Azure SQL Database (Preview).
     - Owner or Contributor role for the Azure subscription.
     > [!IMPORTANT]
     > Azure account is only required when running the migration steps and is not required for assessment or Azure recommendation steps process.
-* Create a target [Azure SQL Managed Instance](/azure/azure-sql/managed-instance/create-configure-managed-instance-powershell-quickstart), [SQL Server on Azure Virtual Machine](/azure/azure-sql/virtual-machines/windows/sql-vm-create-powershell-quickstart) or [Azure SQL Database](/azure/azure-sql/database/single-database-create-quickstart)
-    > [!IMPORTANT] If your target is Azure SQL Database you have to migrate database schema from source to target using [SQL Server dacpac extension](/sql/azure-data-studio/extensions/sql-server-dacpac-extension) or, [SQL Database Projects extension](/sql/azure-data-studio/extensions/sql-database-project-extension) for Azure Data Studio.
+* Create a target [Azure SQL Managed Instance](/azure/azure-sql/managed-instance/create-configure-managed-instance-powershell-quickstart), [SQL Server on Azure Virtual Machine](/azure/azure-sql/virtual-machines/windows/sql-vm-create-powershell-quickstart) or [Azure SQL Database (Preview)](/azure/azure-sql/database/single-database-create-quickstart)
+    > [!IMPORTANT] If your target is Azure SQL Database (Preview) you have to migrate database schema from source to target using [SQL Server dacpac extension](/sql/azure-data-studio/extensions/sql-server-dacpac-extension) or, [SQL Database Projects extension](/sql/azure-data-studio/extensions/sql-database-project-extension) for Azure Data Studio.
     > 
     > If you have an existing Azure Virtual Machine, it should be registered with [SQL IaaS Agent extension in Full management mode](/azure/azure-sql/virtual-machines/windows/sql-server-iaas-agent-extension-automate-management#management-modes).
 * If your target is **Azure SQL Managed Instance** or **SQL Server on Azure Virtual Machine** ensure that the logins used to connect the source SQL Server are members of the *sysadmin* server role or have `CONTROL SERVER` permission.
-* If your target is **Azure SQL Database** ensure that the login used to connect the source SQL Server is member of the `db_datareader` and login for target SQL server is `db_owner`.
+* If your target is **Azure SQL Database (Preview)** ensure that the login used to connect the source SQL Server is member of the `db_datareader` and login for target SQL server is `db_owner`.
 * Use one of the following storage options for the full database and transaction log backup files: 
     - SMB network share 
     - Azure storage account file share or blob container 
@@ -68,8 +68,11 @@ Pre-requisites that are common across all supported migration scenarios using Az
     > [!TIP]
     > If your database backup files are already provided in an Azure storage account, self-hosted integration runtime is not required during the migration process.
 
-    > [!NOTE]
-    > If your target is Azure SQL Database, you don't neet backups to perform this migration. The migration to Azure SQL Database is considered a logical migration which involves the pre-creation of the database and the data movement (peformed by DMS).
+* When using self-hosted integration runtime, make sure that the machine where the runtime is installed can connect to the source SQL Server instance and the network file share where backup files are located. Outbound port 445 should be enabled to allow access to the network file share.
+* If you're using the Azure Database Migration Service for the first time, ensure that Microsoft.DataMigration resource provider is registered in your subscription. You can follow the steps to [register the resource provider](./quickstart-create-data-migration-service-portal.md#register-the-resource-provider)
+
+    > [!IMPORTANT]
+    > If your target is Azure SQL Database (Preview), you don't neet backups to perform this migration. The migration to Azure SQL Database is considered a logical migration which involves the pre-creation of the database and the data movement (peformed by DMS).
 
 ## Resources
 
