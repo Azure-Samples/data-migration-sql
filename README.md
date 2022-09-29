@@ -1,4 +1,4 @@
-# Migrate databases at scale using Azure Database Migration automation
+# Migrate databases at scale using Azure Database Migration automation (Preview)
 
 The [Azure SQL Migration extension for Azure Data Studio](https://docs.microsoft.com/sql/azure-data-studio/extensions/azure-sql-migration-extension) brings together a simplified assessment, recommendation, and migration experience that delivers the following capabilities:
 - An enhanced assessment mechanism that can evaluate SQL Server instances, identifying databases that are ready for migration to the different Azure SQL targets.
