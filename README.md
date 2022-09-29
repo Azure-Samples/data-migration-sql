@@ -19,7 +19,7 @@ SQL Server to Azure SQL Managed Instance (using Azure storage)|[PowerShell](/Pow
 SQL Server to SQL Server on Azure Virtual Machines (using file share)|[PowerShell](/PowerShell/sql-server-to-sql-vm-fileshare.md) / [Azure CLI](/CLI/sql-server-to-sql-vm-fileshare.md)
 SQL Server to SQL Server on Azure Virtual Machines (using Azure Storage)|[PowerShell](/PowerShell/sql-server-to-sql-vm-blob.md) / [Azure CLI](/CLI/sql-server-to-sql-vm-blob.md)
 SQL Server to Azure SQL Database (Preview)|[PowerShell](/PowerShell/sql-server-to-sql-db.md) / [Azure CLI](/CLI/sql-server-to-sql-db.md)
-SKU recommendations|[PowerShell](/PowerShell/sql-server-sku-recommendation.md) / [Azure CLI](/CLI/sql-server-sku-recommendation.md)
+SKU recommendations (Preview)|[PowerShell](/PowerShell/sql-server-sku-recommendation.md) / [Azure CLI](/CLI/sql-server-sku-recommendation.md)
 End-to-End migration automation|[PowerShell](/PowerShell/scripts/) / [Azure CLI](/CLI/scripts/)
 End-to-End migration automation for multiple databases|[PowerShell](/PowerShell/scripts/multiple%20databases/) / [Azure CLI](/CLI/scripts/multiple%20databases/)
 
