@@ -74,7 +74,7 @@ We can get SKU recommendation for given SQL Server using the `Get-AzDataMigratio
 - *StartTime*: UTC start time of performance data points to consider during aggregation, in YYYY-MM-DD HH:MM format. Only used for baseline (non-elastic) strategy. Default: all data points collected will be considered.
 - *EndTime*: UTC end time of performance data points to consider during aggregation, in YYYY-MM-DD HH:MM format. Only used for baseline (non-elastic) strategy. Default: all data points collected will be considered.
 - *DatabaseAllowList*: Space separated list of names of databases to be allowed for SKU recommendation consideration while excluding all others. Only set one of the following or neither: databaseAllowList, databaseDenyList. Default: null. Should be provided like this "Database1 Database2".
-- *DatabaseAllowList*: Space separated list of names of databases to not be considered for SKU recommendation. Only set one of the following or neither: databaseAllowList, databaseDenyList. Default: null. Should be provided like this "Database1 Database2".
+- *DatabaseDenyList*: Space separated list of names of databases to not be considered for SKU recommendation. Only set one of the following or neither: databaseAllowList, databaseDenyList. Default: null. Should be provided like this "Database1 Database2".
 
 
 The following example runs get sku recommendation on a sample SQL server whose data collection report is saved in output folder in C drive with displaying the result on console and overwrite existing reports if any. 
