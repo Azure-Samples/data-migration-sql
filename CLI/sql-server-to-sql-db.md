@@ -1,11 +1,10 @@
-Note: 
-
-- <b>Please run the commands in Azure CLI Administrator Mode as az datamigration register-integration-runtime command requires admin permissions.</b>
-- <b> Both Migration Service and Azure SQL Managed Instance or SQL Server on Azure Virtual Machine or Azure SQL Database  must be in the same location.</b>
-
 ## Perfoming Migration
 
 In this article, we perform an offline migration of the Adventureworks database from SQL Server on-premises to an Azure SQL Database by using Microsoft Azure CLI. You can migrate databases from a SQL Server instance to Azure SQL Database by using the DataMigration extension in Microsoft Azure CLI.
+
+> **Note**
+> - <b>Please run the commands in Azure CLI Administrator Mode as az datamigration register-integration-runtime command requires admin permissions.</b>
+> - <b> Both Migration Service and Azure SQL Managed Instance or SQL Server on Azure Virtual Machine or Azure SQL Database  must be in the same location.</b>
 
 **In this article you learn how to**
 
