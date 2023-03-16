@@ -8,9 +8,9 @@ In this article, we perform a offline migration of the Adventureworks database f
 - Register the Database Migration Service with self-hosted Integration Runtime
 - Start an migration
 
-**Note 1:** Please run the commands in PowerShell 5.x as an Administrator as `Register-AzDataMigrationIntegrationRuntime` command requires admin permissions. 
-
-**Note 2:** You can add `-Debug` parameter to debug cmdlet execution.
+> **Note**
+> Please run the commands in PowerShell 5.x as an Administrator as `Register-AzDataMigrationIntegrationRuntime` command requires admin permissions. 
+> You can add `-Debug` parameter to debug cmdlet execution.
 
 ## Prerequisites
 
