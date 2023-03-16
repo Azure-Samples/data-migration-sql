@@ -9,8 +9,8 @@ In this article, we perform a offline migration of the Adventureworks database f
 - Start an migration
 
 > **Note**
-> Please run the commands in PowerShell 5.x as an Administrator as `Register-AzDataMigrationIntegrationRuntime` command requires admin permissions. 
-> You can add `-Debug` parameter to debug cmdlet execution.
+> - Please run the commands in PowerShell 5.x as an Administrator as `Register-AzDataMigrationIntegrationRuntime` command requires admin permissions. 
+> - You can add `-Debug` parameter to debug cmdlet execution.
 
 ## Prerequisites
 
