@@ -13,7 +13,7 @@ The following sample scripts can be referenced to suit your migration scenario u
 
 | Migration scenario | Scripting language
 |---------|---------|
-SQL Server assessment| [PowerShell](/PowerShell/sql-server-assessment.md) / [Azure CLI](/CI/sql-server-assessment.md)
+SQL Server assessment| [PowerShell](/PowerShell/sql-server-assessment.md) / [Azure CLI](/CLI/sql-server-assessment.md)
 SQL Server to Azure SQL Managed Instance (using file share)|[PowerShell](/PowerShell/sql-server-to-sql-mi-fileshare.md) / [Azure CLI](/CLI/sql-server-to-sql-mi-fileshare.md)
 SQL Server to Azure SQL Managed Instance (using Azure storage)|[PowerShell](/PowerShell/sql-server-to-sql-mi-blob.md) / [Azure CLI](/CLI/sql-server-to-sql-mi-blob.md)
 SQL Server to SQL Server on Azure Virtual Machines (using file share)|[PowerShell](/PowerShell/sql-server-to-sql-vm-fileshare.md) / [Azure CLI](/CLI/sql-server-to-sql-vm-fileshare.md)
